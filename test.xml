@@ -1,0 +1,1814 @@
+<t name="Homepage" t-name="website.homepage">
+    <t t-call="website.layout">
+        <t t-set="pageName" t-value="'homepage'" />
+        <div id="wrap" class="oe_structure">
+            <section class="s_embed_code pt16 pb16 o_colored_level text-start"
+                data-snippet="s_embed_code" data-name="Embed Code">
+                <template class="s_embed_code_saved">
+                    <style>
+                        .hero-section {
+                        background-color: #5F515F;
+                        color: white;
+                        min-height: 95vh;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        padding: 60px 0;
+                        }
+
+                        .hero-content h1 {
+                        font-size: 4.4rem;
+                        font-weight: 400;
+                        }
+
+                        .hero-content p {
+                        font-size: 1.3rem;
+                        margin: 20px 0;
+                        max-width: 700px;
+                        }
+
+                        .hero-section .btn {
+                        font-size: 20px;
+                        }
+
+                        .hero-section .btn-custom {
+                        background-color: white;
+                        color: #5F515F;
+                        border: none;
+                        padding: 15px 20px;
+
+
+                        }
+
+                        .hero-section .btn-secondary-custom {
+                        background-color: transparent;
+                        border: 1px solid white;
+                        color: white;
+                        padding: 15px 20px;
+                        }
+
+                        .hero-section .tshirt-area {
+                        position: relative;
+                        text-align: center;
+                        background-image: url('/web/image/804-8a4bbe14/Group%20465.webp');
+                        background-repeat: no-repeat;
+                        background-position: center;
+                        background-size: contain;
+                        }
+
+
+                        .hero-section .stat-card {
+                        background: #fff;
+                        border-radius: 16px;
+                        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+                        padding: 15px;
+                        position: absolute;
+                        color: #000;
+                        width: 163px;
+                        }
+                        .hero-section .stat-card .card-title{
+                        margin-bottom:10px
+                        }
+                        .hero-section .stat-card .card-title h6 {
+                        font-weight: 600;
+                        font-size: 0.95rem;
+                        margin-bottom: 0;
+                        text-align:start;
+                        }
+
+                        .hero-section .stat-card .card-title .icon {
+                        background-color: #3C3C3C;
+                        color: #fff;
+                        border-radius: 50%;
+                        font-size: 11px;
+                        }
+
+                        .hero-section .stat-card .card-title .icon svg {
+                        height: 14px;
+                        padding: 2px 3px;
+                        }
+
+                        .hero-section .stat-card canvas {
+                        max-width: 120px;
+                        margin: 0 auto;
+                        display: block;
+                        }
+
+                        .hero-section .chart-value {
+                        position: absolute;
+                        left: 50%;
+                        transform: translateX(-50%);
+                        font-size: 14px;
+                        font-weight: bold;
+                        background-color: #C2E8FF;
+                        border-radius: 50%;
+                        padding: 12px 10px;
+                        z-index: -1;
+                        }
+                        .hero-section .stat-position-1 .chart-value,
+                        .hero-section .stat-position-2 .chart-value {
+                        top: 70px;
+                        }
+
+                        .hero-section .stat-position-3 .chart-value
+                        {
+                        top: 90px;
+                        }
+
+                        .hero-section .legend-box {
+                        background: #f2f2f2;
+                        padding: 10px;
+                        border-radius: 10px;
+                        margin-top: 15px;
+                        }
+
+                        .hero-section .legend-item {
+                        display: flex;
+                        justify-content: space-between;
+                        align-items: center;
+                        margin-bottom: 6px;
+                        font-size: 10px;
+                        }
+                        .hero-section .legend-item .rate{
+                        width: 25%;
+                        text-align: start;
+                        }
+                        .hero-section .legend-item:last-child {
+                        margin-bottom: 0;
+                        }
+
+                        .hero-section .legend-color {
+                        width: 10px;
+                        height: 10px;
+                        border-radius: 50%;
+                        margin-right: 8px;
+                        }
+
+                        .hero-section .label-left {
+                        display: flex;
+                        align-items: center;
+                        }
+
+                        .hero-section .stat-position-1 {
+                        top: 0;
+                        right: 0;
+                        transform: translate(-10%, -29%);
+                        }
+
+                        .hero-section .stat-position-2 {
+                        top: 21%;
+                        left: 0;
+                        transform: translate(0, -50%);
+                        }
+
+
+                        .hero-section .stat-position-3 {
+                        bottom: 0;
+                        right: 0;
+                        transform: translate(-12%, 27%);
+                        }
+
+                        .hero-section .container-fluid{
+                        padding-right: calc(var(--gutter-x) * 2.5);
+                        padding-left: calc(var(--gutter-x) * 2.5);
+                        }
+                        .hero-section .stat-card canvas {
+                        width: 100px;
+                        height: 100px;
+
+                        }
+                        @media (max-width: 991.98px) {
+                        .hero-section .container-fluid {
+                        padding-right: calc(var(--gutter-x) * 1);
+                        padding-left: calc(var(--gutter-x) * 1);
+                        }
+                        }
+                        @media (max-width: 829px){
+                        .hero-section .stat-position-1 {
+                        transform: translate(0%, -16%);
+                        }
+                        .hero-section .stat-position-2 {
+                        transform: translate(0, -32%);
+                        }
+                        .hero-section .stat-position-3 {
+                        transform: translate(-12%, 18%);
+                        }
+                        }
+                        @media (max-width: 576px){
+                        .hero-section {
+                        padding-top:0px;
+                        padding-bottom: 30px;
+                        min-height: 90vh;
+                        }
+                        .hero-section .container-fluid {
+                        padding-right: calc(var(--gutter-x) * 0.2);
+                        padding-left: calc(var(--gutter-x) * 0.2);
+                        }
+                        .stat-card{
+                        display:none;
+                        }
+                        .hero-section .btn-custom,
+                        .hero-section .btn-secondary-custom {
+                        padding: 10px 15px;
+                        font-size:14px;
+                        }
+                        .hero-content h1 {
+                        font-size: 2.4rem;
+
+                        }
+
+                        .hero-content p {
+                        font-size: 1.2rem;
+                        margin: 10px 0;
+                        }
+                        .hero-section .img-fluid{
+                        max-width:55%;
+                        }
+                        }
+
+                    </style>
+                    <section class="hero-section">
+                        <div class="container-fluid ">
+                            <div class="row align-items-center mx-0 gy-sm-5">
+                                <div class="col-xl-6 order-2 order-xl-1 hero-content">
+                                    <h1>Crafting Quality Garments, Stitch by Stitch</h1>
+                                    <p>From design to delivery, we manufacture premium apparel
+                                        tailored to your brand’s vision. Trusted by global fashion
+                                        labels and startups alike.</p>
+                                    <div class="d-flex gap-2">
+                                        <a href="/contact-us" class="btn btn-custom rounded-0">Request
+                                            Quote</a>
+                                        <a href="https://www.youtube.com/@NSRLGarments"
+                                            target="_blank"
+                                            class="btn btn-secondary-custom rounded-0">Watch Video</a>
+                                    </div>
+                                </div>
+
+                                <div
+                                    class="col-xl-6 order-1 order-xl-2 d-flex justify-content-center align-items-center tshirt-area">
+                                    <img src="/web/image/802-cfde189e/P0001%201%20%281%29.webp"
+                                        alt="Tshirt Image" class="img-fluid h-100" loading="lazy" />
+
+
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <script src="https://cdn.jsdelivr.net/npm/chart.js" />
+                    <script>
+                        new Chart(document.getElementById("chart1"), {
+                        type: 'doughnut',
+                        data: {
+                        labels: ['Capacity', 'In-house', 'Outsourcing'],
+                        datasets: [{
+                        data: [500, 78, 41],
+                        backgroundColor: ['#C2E8FF', '#51BEFF', '#E3C049'],
+                        borderWidth: 0
+                        }]
+                        },
+                        options: {
+                        cutout: '70%',
+                        plugins: { legend: { display: false } }
+                        }
+                        });
+                        new Chart(document.getElementById("chart2"), {
+                        type: 'doughnut',
+                        data: {
+                        labels: ['Capacity', 'In-house', 'Outsourcing'],
+                        datasets: [{
+                        data: [500, 78, 41],
+                        backgroundColor: ['#C2E8FF', '#51BEFF', '#E3C049'],
+                        borderWidth: 0
+                        }]
+                        },
+                        options: {
+                        cutout: '70%',
+                        plugins: { legend: { display: false } }
+                        }
+                        });
+                        new Chart(document.getElementById("chart3"), {
+                        type: 'doughnut',
+                        data: {
+                        labels: ['Capacity', 'In-house', 'Outsourcing'],
+                        datasets: [{
+                        data: [500, 78, 41],
+                        backgroundColor: ['#C2E8FF', '#51BEFF', '#E3C049'],
+                        borderWidth: 0
+                        }]
+                        },
+                        options: {
+                        cutout: '70%',
+                        plugins: { legend: { display: false } }
+                        }
+                        });
+
+                    </script>
+                </template>
+                <div class="s_embed_code_embedded o_not_editable container-fluid">
+                    <style>
+                        .hero-section {
+                        background-color: #5F515F;
+                        color: white;
+                        min-height: 95vh;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        padding: 60px 0;
+                        }
+
+                        .hero-content h1 {
+                        font-size: 4.4rem;
+                        font-weight: 400;
+                        }
+
+                        .hero-content p {
+                        font-size: 1.3rem;
+                        margin: 20px 0;
+                        max-width: 700px;
+                        }
+
+                        .hero-section .btn {
+                        font-size: 20px;
+                        }
+
+                        .hero-section .btn-custom {
+                        background-color: white;
+                        color: #5F515F;
+                        border: none;
+                        padding: 15px 20px;
+
+
+                        }
+
+                        .hero-section .btn-secondary-custom {
+                        background-color: transparent;
+                        border: 1px solid white;
+                        color: white;
+                        padding: 15px 20px;
+                        }
+
+                        .hero-section .tshirt-area {
+                        position: relative;
+                        text-align: center;
+                        background-image: url('/web/image/804-8a4bbe14/Group%20465.webp');
+                        background-repeat: no-repeat;
+                        background-position: center;
+                        background-size: contain;
+                        }
+
+
+                        .hero-section .stat-card {
+                        background: #fff;
+                        border-radius: 16px;
+                        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+                        padding: 15px;
+                        position: absolute;
+                        color: #000;
+                        width: 163px;
+                        }
+                        .hero-section .stat-card .card-title{
+                        margin-bottom:10px
+                        }
+                        .hero-section .stat-card .card-title h6 {
+                        font-weight: 600;
+                        font-size: 0.95rem;
+                        margin-bottom: 0;
+                        text-align:start;
+                        }
+
+                        .hero-section .stat-card .card-title .icon {
+                        background-color: #3C3C3C;
+                        color: #fff;
+                        border-radius: 50%;
+                        font-size: 11px;
+                        }
+
+                        .hero-section .stat-card .card-title .icon svg {
+                        height: 14px;
+                        padding: 2px 3px;
+                        }
+
+                        .hero-section .stat-card canvas {
+                        max-width: 120px;
+                        margin: 0 auto;
+                        display: block;
+                        }
+
+                        .hero-section .chart-value {
+                        position: absolute;
+                        left: 50%;
+                        transform: translateX(-50%);
+                        font-size: 14px;
+                        font-weight: bold;
+                        background-color: #C2E8FF;
+                        border-radius: 50%;
+                        padding: 12px 10px;
+                        z-index: -1;
+                        }
+                        .hero-section .stat-position-1 .chart-value,
+                        .hero-section .stat-position-2 .chart-value {
+                        top: 70px;
+                        }
+
+                        .hero-section .stat-position-3 .chart-value
+                        {
+                        top: 90px;
+                        }
+
+                        .hero-section .legend-box {
+                        background: #f2f2f2;
+                        padding: 10px;
+                        border-radius: 10px;
+                        margin-top: 15px;
+                        }
+
+                        .hero-section .legend-item {
+                        display: flex;
+                        justify-content: space-between;
+                        align-items: center;
+                        margin-bottom: 6px;
+                        font-size: 10px;
+                        }
+                        .hero-section .legend-item .rate{
+                        width: 25%;
+                        text-align: start;
+                        }
+                        .hero-section .legend-item:last-child {
+                        margin-bottom: 0;
+                        }
+
+                        .hero-section .legend-color {
+                        width: 10px;
+                        height: 10px;
+                        border-radius: 50%;
+                        margin-right: 8px;
+                        }
+
+                        .hero-section .label-left {
+                        display: flex;
+                        align-items: center;
+                        }
+
+                        .hero-section .stat-position-1 {
+                        top: 0;
+                        right: 0;
+                        transform: translate(-10%, -29%);
+                        }
+
+                        .hero-section .stat-position-2 {
+                        top: 21%;
+                        left: 0;
+                        transform: translate(0, -50%);
+                        }
+
+
+                        .hero-section .stat-position-3 {
+                        bottom: 0;
+                        right: 0;
+                        transform: translate(-12%, 27%);
+                        }
+
+                        .hero-section .container-fluid{
+                        padding-right: calc(var(--gutter-x) * 2.5);
+                        padding-left: calc(var(--gutter-x) * 2.5);
+                        }
+                        .hero-section .stat-card canvas {
+                        width: 100px;
+                        height: 100px;
+
+                        }
+                        @media (max-width: 991.98px) {
+                        .hero-section .container-fluid {
+                        padding-right: calc(var(--gutter-x) * 1);
+                        padding-left: calc(var(--gutter-x) * 1);
+                        }
+                        }
+                        @media (max-width: 829px){
+                        .hero-section .stat-position-1 {
+                        transform: translate(0%, -16%);
+                        }
+                        .hero-section .stat-position-2 {
+                        transform: translate(0, -32%);
+                        }
+                        .hero-section .stat-position-3 {
+                        transform: translate(-12%, 18%);
+                        }
+                        }
+                        @media (max-width: 576px){
+                        .hero-section {
+                        padding-top:0px;
+                        padding-bottom: 30px;
+                        min-height: 90vh;
+                        }
+                        .hero-section .container-fluid {
+                        padding-right: calc(var(--gutter-x) * 0.2);
+                        padding-left: calc(var(--gutter-x) * 0.2);
+                        }
+                        .stat-card{
+                        display:none;
+                        }
+                        .hero-section .btn-custom,
+                        .hero-section .btn-secondary-custom {
+                        padding: 10px 15px;
+                        font-size:14px;
+                        }
+                        .hero-content h1 {
+                        font-size: 2.4rem;
+
+                        }
+
+                        .hero-content p {
+                        font-size: 1.2rem;
+                        margin: 10px 0;
+                        }
+                        .hero-section .img-fluid{
+                        max-width:55%;
+                        }
+                        }
+
+                    </style>
+                    <section class="hero-section">
+                        <div class="container-fluid ">
+                            <div class="row align-items-center mx-0 gy-sm-5">
+                                <div class="col-xl-6 order-2 order-xl-1 hero-content">
+                                    <h1>Crafting Quality Garments, Stitch by Stitch</h1>
+                                    <p>From design to delivery, we manufacture premium apparel
+                                        tailored to your brand’s vision. Trusted by global fashion
+                                        labels and startups alike.</p>
+                                    <div class="d-flex gap-2">
+                                        <a href="/contact-us" class="btn btn-custom rounded-0">Request
+                                            Quote</a>
+                                        <a href="https://www.youtube.com/@NSRLGarments"
+                                            target="_blank"
+                                            class="btn btn-secondary-custom rounded-0">Watch Video</a>
+                                    </div>
+                                </div>
+
+                                <div
+                                    class="col-xl-6 order-1 order-xl-2 d-flex justify-content-center align-items-center tshirt-area">
+                                    <img src="/web/image/802-cfde189e/P0001%201%20%281%29.webp"
+                                        alt="Tshirt Image" class="img-fluid h-100" loading="lazy" />
+
+
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                    <script src="https://cdn.jsdelivr.net/npm/chart.js" />
+                    <script>
+                        new Chart(document.getElementById("chart1"), {
+                        type: 'doughnut',
+                        data: {
+                        labels: ['Capacity', 'In-house', 'Outsourcing'],
+                        datasets: [{
+                        data: [500, 78, 41],
+                        backgroundColor: ['#C2E8FF', '#51BEFF', '#E3C049'],
+                        borderWidth: 0
+                        }]
+                        },
+                        options: {
+                        cutout: '70%',
+                        plugins: { legend: { display: false } }
+                        }
+                        });
+                        new Chart(document.getElementById("chart2"), {
+                        type: 'doughnut',
+                        data: {
+                        labels: ['Capacity', 'In-house', 'Outsourcing'],
+                        datasets: [{
+                        data: [500, 78, 41],
+                        backgroundColor: ['#C2E8FF', '#51BEFF', '#E3C049'],
+                        borderWidth: 0
+                        }]
+                        },
+                        options: {
+                        cutout: '70%',
+                        plugins: { legend: { display: false } }
+                        }
+                        });
+                        new Chart(document.getElementById("chart3"), {
+                        type: 'doughnut',
+                        data: {
+                        labels: ['Capacity', 'In-house', 'Outsourcing'],
+                        datasets: [{
+                        data: [500, 78, 41],
+                        backgroundColor: ['#C2E8FF', '#51BEFF', '#E3C049'],
+                        borderWidth: 0
+                        }]
+                        },
+                        options: {
+                        cutout: '70%',
+                        plugins: { legend: { display: false } }
+                        }
+                        });
+
+                    </script>
+                </div>
+            </section>
+            <section class="s_key_images section-padding o_colored_level " data-snippet="s_key_images"
+                data-name="Key Images" style="position: relative;">
+
+                <div class="container">
+                    <div class="row s_nb_column_fixed o_grid_mode" data-row-count="16">
+                        <div class="o_colored_level o_grid_item g-col-lg-8 g-height-4 col-lg-8"
+                            style="grid-area: 1 / 1 / 5 / 9; z-index: 1;">
+                            <h2>Our Services</h2>
+                        </div>
+                        <div class="o_colored_level o_grid_item g-col-lg-8 g-height-1 col-lg-8"
+                            style="grid-area: 3 / 1 / 4 / 9; z-index: 2;">
+                            <p>
+                                <span style="font-size: 1.125rem;">
+                                    <font style="color: rgb(150, 148, 148);">
+                                        Our complete garment services ensure your ideas become
+                                        standout
+                                        clothing. We deliver precision, vibrant detail, and
+                                        consistent quality, helping
+                                        brands grow with reliable, premium production support.</font>
+                                </span>
+                            </p>
+                            <p>
+                            </p>
+                        </div>
+
+
+                        <div class="o_colored_level o_grid_item g-col-lg-2 g-height-2 col-lg-2"
+                            style="z-index: 3; grid-area: 3 / 11 / 5 / 13;">
+                            <p>
+                                <a class="btn btn-primary" href="/services">View All</a>
+                            </p>
+                        </div>
+                        <div
+                            class="o_colored_level col-12 o_grid_item g-col-lg-3 g-height-12 col-lg-3"
+                            style="z-index: 5; grid-area: 5 / 4 / 17 / 7;">
+                            <p class="h1-fs">
+                                <font style="color: rgb(235, 235, 235);">02</font>
+                            </p>
+                            <p>
+                                <img src="/web/image/809-ad3bba13/Mask%20group%20%2876%29.webp"
+                                    alt="" class="img img-fluid rounded o_we_custom_image"
+                                    style="width: 100% !important;" data-mimetype="image/webp"
+                                    data-original-id="806"
+                                    data-original-src="/web/image/806-bf9a6310/Mask%20group%20%2876%29.png"
+                                    data-mimetype-before-conversion="image/png"
+                                    data-resize-width="NaN" loading="lazy" />
+                            </p>
+                            <h3>
+                                <span style="font-size: 1.375rem;">PRINT PATTERN SETTING</span>
+                                <br />
+                            </h3>
+                            <p>We ensure
+                                every design fits fabric perfectly, creating sharp, aligned prints
+                                that bring
+                                your custom garments to life with clear placement and professional,
+                                consistent
+                                results every time.</p>
+                            <p>
+                                <a class="o_translate_inline btn btn-primary"
+                                    href="/services/print-pattern-setting">View More</a>
+                                <br />
+                            </p>
+                        </div>
+                        <div
+                            class="o_colored_level col-12 o_grid_item g-col-lg-3 g-height-12 col-lg-3"
+                            style="z-index: 4; grid-area: 5 / 1 / 17 / 4;">
+                            <p class="h1-fs">
+                                <font style="color: rgb(235, 235, 235);">01</font>
+                            </p>
+                            <p>
+                                <img src="/web/image/811-61c062da/Mask%20group%20%2875%29.webp"
+                                    alt="" class="img img-fluid rounded o_we_custom_image"
+                                    style="width: 100% !important;" data-mimetype="image/webp"
+                                    data-original-id="805"
+                                    data-original-src="/web/image/805-548e809b/Mask%20group%20%2875%29.png"
+                                    data-mimetype-before-conversion="image/png"
+                                    data-resize-width="NaN" loading="lazy" />
+                            </p>
+                            <h3>
+                                <span style="font-size: 1.375rem;">CREATE DESIGN</span>
+                                <br />
+                            </h3>
+                            <p>We craft
+                                every garment with precision, creative detail, and reliable quality,
+                                giving
+                                brands the confidence to grow with standout clothing and a partner
+                                they can
+                                trust completely.</p>
+                            <p>
+                                <a class="btn btn-primary" href="/services/creative-design">View
+                                    More</a>
+                                <br />
+                            </p>
+                        </div>
+                        <div class="o_colored_level o_grid_item g-col-lg-3 g-height-12 col-lg-3"
+                            style="z-index: 6; grid-area: 5 / 7 / 17 / 10;">
+                            <p class="h1-fs">
+                                <font class="text-o-color-3">03</font>
+                            </p>
+                            <p>
+                                <img src="/web/image/810-9a53d7c4/Mask%20group%20%2877%29.webp"
+                                    alt="" class="img img-fluid rounded o_we_custom_image"
+                                    style="width: 100% !important;" data-mimetype="image/webp"
+                                    data-original-id="807"
+                                    data-original-src="/web/image/807-0d3d9d67/Mask%20group%20%2877%29.png"
+                                    data-mimetype-before-conversion="image/png"
+                                    data-resize-width="NaN" loading="lazy" />
+                            </p>
+                            <h3>
+                                <span style="font-size: 1.375rem;">SUBLIMATION PRINTING</span>
+                                <br />
+                            </h3>
+                            <p>Our sublimation printing keeps colors bright and clear. Each garment
+                                looks good, feels smooth, and stays colorful and neat, even after
+                                many washes.<br /><br /></p>
+                            <p>
+                                <a class="o_translate_inline btn btn-primary"
+                                    href="/services/sublimation-printing">View More</a>
+                                <br />
+                            </p>
+                        </div>
+                        <div
+                            class="o_colored_level col-12 o_grid_item g-col-lg-3 g-height-12 col-lg-3"
+                            style="z-index: 7; grid-area: 5 / 10 / 17 / 13;">
+                            <p class="h1-fs">
+                                <font class="text-o-color-3">04</font>
+                            </p>
+                            <p>
+                                <img src="/web/image/812-a4967cd8/Mask%20group%20%2878%29.webp"
+                                    alt="" class="img img-fluid rounded o_we_custom_image"
+                                    style="width: 100% !important;" data-mimetype="image/webp"
+                                    data-original-id="808"
+                                    data-original-src="/web/image/808-e2bf6fd1/Mask%20group%20%2878%29.png"
+                                    data-mimetype-before-conversion="image/png"
+                                    data-resize-width="NaN" loading="lazy" />
+                            </p>
+                            <h3>
+                                <span style="font-size: 1.375rem;">PRECISION CUTTING</span>
+                                <br />
+                            </h3>
+                            <p>Each fabric is cut neatly and correctly, so every garment fits well,
+                                stays in shape, and looks sharp, giving your brand clean, perfect
+                                results.<br /><br /></p>
+                            <p>
+                                <span style="font-size: 1rem;"><a
+                                        class="o_translate_inline btn btn-primary"
+                                        href="/services/cutting">View More</a>​</span>
+                                <br />
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <section class="s_product_list o_colored_level section-padding" data-vcss="001"
+                data-snippet="s_product_list" data-name="Items"
+                style="background-color: rgb(238, 238, 238); position: relative;"
+                data-oe-shape-data="{&quot;shape&quot;:&quot;web_editor/Floats/05&quot;,&quot;flip&quot;:[],&quot;showOnMobile&quot;:false,&quot;shapeAnimationSpeed&quot;:&quot;0&quot;,&quot;animated&quot;:&quot;true&quot;}">
+                <div class="o_we_shape o_web_editor_Floats_05 o_we_animated" />
+                <div class="container">
+                    <div class="row s_nb_column_fixed o_grid_mode" data-row-count="11">
+                        <div class="o_grid_item g-col-lg-12 g-height-2 col-lg-12"
+                            style="grid-area: 1 / 1 / 3 / 13; z-index: 1;">
+                            <h2>Top Categories<span class="oe-tabs"
+                                    style="width: 35.8167px; tab-size: 35.8167px;"> </span>​​</h2>
+                        </div>
+
+
+                        <div data-name="Card" class="o_grid_item g-col-lg-3 g-height-8 col-lg-3"
+                            style="z-index: 3; grid-area: 4 / 4 / 12 / 7;">
+                            <div
+                                class="s_card card o_cc o_cc1 o_colored_level o_card_img_top border rounded"
+                                data-snippet="s_card" data-vxml="001" data-name="Card"
+                                style="border-width: 0px !important; border-radius: 0px !important;">
+
+                                <div class="card-body">
+                                    <img src="/web/image/820-ec3ea62f/Mask%20group%20%2880%29.webp"
+                                        alt=""
+                                        class="img img-fluid o_we_custom_image mx-auto d-block"
+                                        data-mimetype="image/webp" data-original-id="814"
+                                        data-original-src="/web/image/814-9a98e93d/Mask%20group%20%2880%29.png"
+                                        data-mimetype-before-conversion="image/png"
+                                        data-resize-width="NaN" loading="lazy" />
+                                    <p class="card-title" style="text-align: center;">
+                                        <span style="font-size: 1.625rem;">
+                                            Crew Neck
+
+                                        </span>
+                                        <br />
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        <div data-name="Card" class="o_grid_item g-col-lg-3 g-height-8 col-lg-3"
+                            style="z-index: 4; grid-area: 4 / 7 / 12 / 10;">
+                            <div
+                                class="s_card o_card_img_top card o_cc o_cc1 o_colored_level border rounded"
+                                data-snippet="s_card" data-vxml="001" data-name="Card"
+                                style="border-width: 0px !important; border-radius: 0px !important;">
+
+                                <div class="card-body">
+                                    <img src="/web/image/821-68cc3ce3/mens-chine.webp" alt=""
+                                        class="img img-fluid o_we_custom_image mx-auto d-block"
+                                        data-mimetype="image/webp" data-original-id="816"
+                                        data-original-src="/web/image/816-949f67a1/mens-chine.webp"
+                                        data-mimetype-before-conversion="image/webp"
+                                        data-resize-width="NaN" loading="lazy" />
+                                    <p class="card-title" style="text-align: center;">
+                                        <span style="font-size: 1.625rem;">Chinese Collar&amp;nbsp;</span>
+                                        <br />
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        <div data-name="Card" class="o_grid_item g-col-lg-3 g-height-8 col-lg-3"
+                            style="z-index: 5; grid-area: 4 / 10 / 12 / 13;">
+                            <div
+                                class="s_card card o_cc o_cc1 o_colored_level o_card_img_top border rounded"
+                                data-snippet="s_card" data-vxml="001" data-name="Card"
+                                style="border-width: 0px !important; border-radius: 0px !important;">
+
+                                <div class="card-body">
+                                    <img
+                                        src="/web/image/823-44eb0670/mens-v-neck-half-sleeve-jersey-front.webp"
+                                        alt=""
+                                        class="img img-fluid o_we_custom_image mx-auto d-block"
+                                        data-mimetype="image/webp" data-original-id="818"
+                                        data-original-src="/web/image/818-d486fbb2/mens-v-neck-half-sleeve-jersey-front.webp"
+                                        data-mimetype-before-conversion="image/webp"
+                                        data-resize-width="NaN" loading="lazy" />
+                                    <p class="card-title h5-fs" style="text-align: center;">
+                                        <span style="font-size: 1.625rem;">V Neck&amp;nbsp;</span>
+                                        <br />
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        <div data-name="Card" class="o_grid_item g-col-lg-3 g-height-8 col-lg-3"
+                            style="z-index: 2; grid-area: 4 / 1 / 12 / 4;">
+                            <div
+                                class="s_card o_card_img_top card o_cc o_cc1 o_colored_level border rounded"
+                                data-snippet="s_card" data-vxml="001" data-name="Card"
+                                style="border-width: 0px !important; border-radius: 0px !important;">
+
+                                <div class="card-body">
+                                    <img src="/web/image/822-608334ca/Mask%20group%20%2879%29.webp"
+                                        alt=""
+                                        class="img img-fluid o_we_custom_image mx-auto d-block"
+                                        data-mimetype="image/webp" data-original-id="813"
+                                        data-original-src="/web/image/813-73f0fae7/Mask%20group%20%2879%29.png"
+                                        data-mimetype-before-conversion="image/png"
+                                        data-resize-width="NaN" loading="lazy" />
+                                    <p class="card-title" style="text-align: center;">
+                                        <span style="font-size: 1.625rem;">
+                                            Polo
+
+                                        </span>
+                                        <br />
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <section class="s_text_image o_colored_level section-padding" data-snippet="s_text_image"
+                data-name="Text - Image" style="position: relative;">
+                <div class="container">
+                    <div class="row o_grid_mode" data-row-count="15" style="row-gap: 0px;">
+
+                        <div
+                            class="o_colored_level o_grid_item o_grid_item_image g-col-lg-5 g-height-15 col-lg-5 o_grid_item_image_contain"
+                            style="grid-area: 1 / 8 / 16 / 13; z-index: 2; background-color: rgb(92, 79, 92);">
+                            <img src="/web/image/860-c70e0d80/hoodie-aop.webp" alt=""
+                                class="img img-fluid mx-auto o_we_custom_image o_anim_fade_in o_animate o_visible rounded"
+                                style="width: 100% !important;" data-mimetype="image/webp"
+                                data-original-id="838"
+                                data-original-src="/web/image/838-7a30577c/hoodie-aop.png"
+                                data-mimetype-before-conversion="image/png" data-resize-width="NaN"
+                                loading="eager" />
+                        </div>
+                        <div class="o_colored_level o_grid_item g-height-5 g-col-lg-5 col-lg-5"
+                            style="z-index: 1; grid-area: 3 / 1 / 8 / 6;">
+                            <h2>Designs That Drape the Whole Look&amp;nbsp;<br /></h2>
+                        </div>
+                        <div class="o_grid_item o_colored_level g-col-lg-6 g-height-4 col-lg-6"
+                            style="z-index: 3; grid-area: 8 / 1 / 12 / 7;">
+                            <p>
+                                Turn your entire garment into something truly eye-catching. With
+                                vibrant, all-over printing from edge to edge, every part of your
+                                clothing comes
+                                to life. Perfect for brands that want bold, head-turning designs
+                                with smooth
+                                detail and standout quality in every wear.</p>
+                            <p>
+                            </p>
+                            <p>
+                                <font style="color: rgb(150, 148, 148);">
+
+
+                                    &amp;nbsp;</font>
+                                <a class="o_translate_inline btn btn-primary"
+                                    href="/shop/mens-cuban-collar-shirt-109">View Products</a>
+                                <br />
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <section class="s_numbers_boxed o_colored_level o_cc o_cc5 section-padding"
+                data-snippet="s_numbers_boxed" data-name="Numbers boxed"
+                style="background-color: rgb(92, 79, 92); position: relative;">
+                <div class="container">
+                    <div class="row o_grid_mode" style="gap: 10px;" data-row-count="12">
+
+
+                        <div
+                            class="o_grid_item border o_cc o_cc4 o_colored_level g-height-4 order-lg-0 g-col-lg-4 col-lg-4 offset-lg-0 offset-1 col-10"
+                            style="--grid-item-padding-y: 64px; text-align: center; z-index: 6; grid-area: 5 / 9 / 9 / 13; order: 3; border-color: rgb(255, 255, 255) !important;">
+                            <h3 class="display-3-fs">
+                                <span class="h1-fs">
+                                    <font
+                                        style="background-image: linear-gradient(45deg, var(--o-color-4) 15%, var(--o-color-5) 100%);"
+                                        class="text-gradient">
+                                        <font
+                                            style="-webkit-text-fill-color: rgb(235, 235, 235); color: rgb(235, 235, 235);">
+                                            752</font>
+
+                                    </font>
+                                </span>
+                                <br />
+                            </h3>
+                            <p>
+                                <strong>
+                                    Total Orders</strong>
+                                <span style="font-size: 1rem;" />
+                                <strong>
+
+                                </strong>
+                                <br />
+                            </p>
+                        </div>
+                        <div
+                            class="o_grid_item border o_cc o_cc4 o_colored_level g-height-4 g-col-lg-4 col-lg-4 order-lg-0 offset-1 offset-lg-0 col-10"
+                            style="--grid-item-padding-y: 64px; text-align: center; z-index: 8; grid-area: 5 / 5 / 9 / 9; order: 2; border-color: rgb(238, 238, 239) !important;">
+                            <h3 class="display-3-fs">
+                                <span class="h1-fs">
+                                    <font
+                                        style="background-image: linear-gradient(45deg, var(--o-color-4) 15%, var(--o-color-5) 100%);"
+                                        class="text-gradient">
+                                        <font
+                                            style="-webkit-text-fill-color: rgb(235, 235, 235); color: rgb(235, 235, 235);">
+                                            28</font>
+
+                                    </font>
+                                </span>
+                                <br />
+                            </h3>
+                            <p>
+                                <strong>
+                                    Total Customers
+
+                                </strong>
+                                <br />
+                            </p>
+                        </div>
+                        <div
+                            class="o_grid_item border o_cc o_cc4 o_colored_level g-col-lg-4 g-height-4 col-lg-4 order-lg-0 offset-1 offset-lg-0 col-10"
+                            style="--grid-item-padding-y: 64px; text-align: center; z-index: 2; grid-area: 5 / 1 / 9 / 5; order: 1; border-color: rgb(238, 238, 239) !important;">
+                            <h3 class="display-3-fs">
+                                <span class="h1-fs">
+                                    <font
+                                        style="background-image: linear-gradient(135deg, var(--o-color-4) 15%, var(--o-color-5) 100%);"
+                                        class="text-gradient">
+                                        <font
+                                            style="-webkit-text-fill-color: rgb(235, 235, 235); color: rgb(235, 235, 235);">
+                                            03</font>
+
+                                    </font>
+                                </span>
+                                <br />
+                            </h3>
+                            <p>
+                                <strong>
+                                    Months in Business
+
+                                </strong>
+                                <br />
+                            </p>
+                        </div>
+                        <div
+                            class="o_grid_item o_colored_level order-lg-0 g-height-3 g-col-lg-12 col-lg-12"
+                            style="text-align: center; z-index: 1; grid-area: 2 / 1 / 5 / 13; order: 0;">
+                            <h2 style="text-align: center;">
+                                <span class="h2-fs">Key Metrics of Our Achievements </span>
+                                <br />
+                            </h2>
+                            <p style="text-align: center;">
+
+                                <span class="base-fs">
+                                    <font class="text-400">Proud milestones showing how we grow,
+                                        give back, and build trust with every jersey made, customer
+                                        served, and reward shared along the way.&amp;nbsp;</font>
+                                </span>
+                                <br />
+                            </p>
+                        </div>
+                        <div
+                            class="o_grid_item g-col-lg-4 border o_cc o_cc4 o_colored_level col-12 g-height-4 col-lg-4 order-lg-0 d-lg-block d-none o_snippet_mobile_invisible"
+                            style="--grid-item-padding-y: 64px; text-align: center; z-index: 9; grid-area: 9 / 9 / 13 / 13; order: 4; border-color: rgb(255, 255, 255) !important;"
+                            data-invisible="1">
+                            <h3 class="display-3-fs">
+                                <font
+                                    style="background-image: linear-gradient(45deg, var(--o-color-4) 15%, var(--o-color-5) 100%);"
+                                    class="text-gradient">8+</font>
+                            </h3>
+                            <p>
+                                <strong>Amazing pages</strong>
+                            </p>
+                        </div>
+                        <div
+                            class="o_grid_item g-col-lg-4 border o_cc o_cc4 o_colored_level g-height-4 col-lg-4 order-lg-0 offset-1 offset-lg-0 col-10"
+                            style="--grid-item-padding-y: 64px; text-align: center; z-index: 9; grid-area: 9 / 9 / 13 / 13; order: 6; border-color: rgb(255, 255, 255) !important;">
+                            <h3 class="display-3-fs">
+                                <font
+                                    style="background-image: linear-gradient(45deg, var(--o-color-4) 15%, var(--o-color-5) 100%);"
+                                    class="text-gradient">
+                                    <font
+                                        style="-webkit-text-fill-color: rgb(235, 235, 235); color: rgb(235, 235, 235);">
+                                        2534
+
+</font>
+                                </font>
+                                <br />
+                            </h3>
+                            <p>
+                                <strong>
+                                    Reward Points
+
+                                </strong>
+                                <br />
+                            </p>
+                        </div>
+                        <div
+                            class="o_grid_item border o_cc o_cc4 o_colored_level g-col-lg-4 g-height-4 col-lg-4 order-lg-0 offset-1 offset-lg-0 col-10"
+                            style="--grid-item-padding-y: 64px; text-align: center; z-index: 4; grid-area: 9 / 5 / 13 / 9; order: 5; border-color: rgb(238, 238, 239) !important;">
+                            <h3 class="display-3-fs">
+                                <font
+                                    style="background-image: linear-gradient(45deg, var(--o-color-4) 15%, var(--o-color-5) 100%);"
+                                    class="text-gradient">
+                                    <font
+                                        style="-webkit-text-fill-color: rgb(235, 235, 235); color: rgb(235, 235, 235);">
+                                        07</font>
+
+                                </font>
+                                <br />
+                            </h3>
+                            <p>
+                                <strong>
+                                    Jersey on Wall
+
+                                </strong>
+                                <br />
+                            </p>
+                        </div>
+                        <div
+                            class="o_grid_item g-col-lg-4 col-lg-4 border o_cc o_cc4 o_colored_level g-height-4 order-lg-0 offset-lg-0 offset-1 col-10"
+                            style="--grid-item-padding-y: 64px; text-align: center; z-index: 5; grid-area: 9 / 1 / 13 / 5; order: 4; border-color: rgb(255, 255, 255) !important;">
+                            <h3 class="display-3-fs">
+                                <font
+                                    style="background-image: linear-gradient(135deg, var(--o-color-4) 15%, var(--o-color-5) 100%);"
+                                    class="text-gradient">
+                                    <font
+                                        style="-webkit-text-fill-color: rgb(235, 235, 235); color: rgb(235, 235, 235);">
+                                        21</font>
+
+                                </font>
+                                <br />
+                            </h3>
+                            <p>
+                                <strong>
+                                    Jerseys Donated So Far
+
+                                </strong>
+                                <br />
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <section class="s_text_image o_colored_level o_half_screen_height section-padding"
+                data-snippet="s_image_text" data-name="Image - Text">
+                <div class="container">
+                    <div class="row o_grid_mode" data-row-count="13">
+
+
+                        <div
+                            class="o_colored_level o_grid_item g-height-13 o_grid_item_image g-col-lg-6 col-lg-6"
+                            style="z-index: 1; grid-area: 1 / 1 / 14 / 7;">
+                            <img
+                                src="/web/image/830-9ff60a73/Mask%20group%20-%202025-08-29T145608.254.webp"
+                                alt="" class="img img-fluid mx-auto rounded o_we_custom_image"
+                                data-mimetype="image/webp" data-original-id="826"
+                                data-original-src="/web/image/826-82c08456/Mask%20group%20-%202025-08-29T145608.254.png"
+                                data-mimetype-before-conversion="image/png" data-resize-width="NaN"
+                                loading="lazy" />
+                        </div>
+                        <div class="o_colored_level o_grid_item g-col-lg-5 g-height-8 col-lg-5"
+                            style="z-index: 2; grid-area: 3 / 8 / 11 / 13;">
+                            <h2 class="h3-fs">
+                                <span class="h2-fs">JERSEY ON THE WALL</span>
+
+                                <br />
+                            </h2>
+                            <p>
+
+                                <span class="h5-fs">
+                                    <em>
+                                        <font class="text-600"><strong>“A Gift That Makes Someone
+                                            Smile.”</strong>&amp;nbsp;</font>
+                                    </em>
+                                </span>
+                                <br />
+                                <br />
+                                <span class="h5-fs">
+                                    <font class="text-600">For every 100 jerseys ordered, we hang
+                                        one on our wall to gift someone who can’t afford it. It’s
+                                        our way of giving back, sharing kindness, and ensuring every
+                                        jersey spreads hope, warmth, and pride to someone who needs
+                                        it.</font>
+                                </span>
+                                <br />
+                                <br />
+                                <a class="btn btn-primary" href="/nsrl-wall">
+                                    <span class="o_small-fs">Visit Wall</span>
+                                </a>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <section class="s_text_image o_colored_level o_cc o_cc1 section-padding"
+                data-snippet="s_text_image" data-name="Text - Image" style="position: relative;">
+                <div class="container-fluid">
+                    <div class="row o_grid_mode" data-row-count="11" style="gap: 10px;">
+
+
+                        <div
+                            class="o_colored_level o_grid_item o_grid_item_image g-col-lg-6 g-height-11 col-lg-6"
+                            style="z-index: 2; grid-area: 1 / 7 / 12 / 13;">
+                            <img
+                                src="/web/image/834-dc7f0c67/Mask%20group%20-%202025-08-29T145613.399.webp"
+                                alt="" class="img img-fluid mx-auto o_we_custom_image rounded"
+                                data-mimetype="image/webp" data-original-id="827"
+                                data-original-src="/web/image/827-203c9b7e/Mask%20group%20-%202025-08-29T145613.399.png"
+                                data-mimetype-before-conversion="image/png" data-resize-width="NaN"
+                                loading="lazy" />
+                        </div>
+                        <div class="o_colored_level o_grid_item g-height-4 g-col-lg-4 col-lg-4"
+                            style="z-index: 3; grid-area: 2 / 2 / 6 / 6;">
+                            <h2> Breathable Fabric made to move with you&amp;nbsp;<br /></h2>
+                        </div>
+                        <div class="o_colored_level o_grid_item g-col-lg-4 g-height-3 col-lg-4"
+                            style="z-index: 1; grid-area: 7 / 2 / 10 / 6;">
+                            <p>
+                                <font style="color: rgb(150, 148, 148);">Discover breathable
+                                    sportswear with full-surface, all-over prints that stay bright
+                                    wear after wear. Designed for movement and comfort, our
+                                    custom-printed fabrics help brands deliver activewear that
+                                    performs on the field and stands out everywhere else.&amp;nbsp;</font>
+                                <br />
+                            </p>
+                            <p>
+                                <a class="btn btn-primary" href="/fabrics">View Fabrics</a>
+                                <br />
+                            </p>
+
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <section class="s_features_wall o_colored_level o_cc o_cc2 section-padding"
+                data-snippet="s_features_wall" data-name="Features Wall" style="position: relative;">
+
+                <div class="container">
+                    <div class="row o_grid_mode" data-row-count="21" style="gap: 10px 20px;">
+
+                        <div
+                            class="o_grid_item o_grid_item_image o_colored_level o_grid_item_image_contain o_cc o_cc2 bg-200 g-height-6 g-col-lg-3 col-lg-3 order-lg-0"
+                            style="z-index: 2; grid-area: 1 / 7 / 7 / 10; --grid-item-padding-y: 0px; --grid-item-padding-x: 0px; order: 2;">
+                            <img
+                                src="/web/image/832-4b092b88/Mask%20group%20-%202025-08-29T145618.450.webp"
+                                alt="" class="img img-fluid o_we_custom_image"
+                                style="width: 100% !important;" data-mimetype="image/webp"
+                                data-original-id="828"
+                                data-original-src="/web/image/828-afa86db0/Mask%20group%20-%202025-08-29T145618.450.png"
+                                data-mimetype-before-conversion="image/png" data-resize-width="NaN"
+                                loading="lazy" />
+                        </div>
+                        <div
+                            class="o_grid_item g-col-lg-3 s_col_no_bgcolor g-height-4 col-lg-3 order-lg-0"
+                            style="z-index: 3; grid-area: 7 / 7 / 11 / 10; --grid-item-padding-y: 16px; --grid-item-padding-x: 16px; order: 3;">
+                            <h3 class="h5-fs">
+                                <span style="font-size: 1.375rem;">
+                                    <font class="text-black">Coloreel&amp;nbsp;</font>
+                                </span>
+                                &amp;nbsp;<br /></h3>
+                            <p>
+                                <font style="color: rgb(150, 148, 148);">Coloreel dyes threads
+                                    instantly, creating vivid embroidery with smooth colors that add
+                                    unique depth, detail, and endless creative design options.</font>
+                            </p>
+                            <p>
+                                <a class="o_translate_inline btn btn-primary"
+                                    href="/technologies/coloreel">View More&amp;nbsp;</a>
+                                <br />
+                            </p>
+                        </div>
+                        <div
+                            class="o_grid_item o_grid_item_image g-height-6 g-col-lg-3 col-lg-3 o_colored_level o_grid_item_image_contain order-lg-0"
+                            style="z-index: 4; grid-area: 12 / 7 / 18 / 10; --grid-item-padding-y: 0px; --grid-item-padding-x: 0px; order: 4;">
+                            <img src="/web/image/856-bb389f36/grando-machine.webp" alt=""
+                                class="img img-fluid o_we_custom_image"
+                                style="width: 100% !important;" data-mimetype="image/webp"
+                                data-original-id="839"
+                                data-original-src="/web/image/839-e01325f7/grando-machine.png"
+                                data-mimetype-before-conversion="image/png" data-resize-width="NaN"
+                                loading="lazy" />
+                        </div>
+                        <div
+                            class="o_grid_item g-col-lg-3 s_col_no_bgcolor order-lg-0 g-height-4 col-lg-3"
+                            style="z-index: 9; grid-area: 18 / 7 / 22 / 10; --grid-item-padding-y: 16px; --grid-item-padding-x: 16px; order: 5;">
+                            <h3 class="h5-fs">
+                                <span style="font-size: 1.375rem;">
+                                    <font class="text-black">Grando</font>
+                                </span>
+                                <span style="font-size: 1.5rem;">&amp;nbsp;</span>
+                                <br />
+                            </h3>
+                            <p>
+                                <font style="color: rgb(150, 148, 148);">
+
+                                    Grando handles large orders efficiently, delivering clean, sharp
+                                    prints with vibrant, lasting colors that keep every garment
+                                    looking fresh and polished.</font>
+                                <br />
+                            </p>
+                            <p>
+                                <a class="o_translate_inline btn btn-primary"
+                                    href="/technologies/grando">View More</a>
+                                <br />
+                            </p>
+                        </div>
+
+                        <div
+                            class="o_grid_item g-height-4 g-col-lg-3 col-lg-3 s_col_no_bgcolor order-lg-0"
+                            style="z-index: 7; grid-area: 12 / 10 / 16 / 13; --grid-item-padding-y: 16px; --grid-item-padding-x: 16px; order: 7;">
+                            <h3 class="h5-fs">
+                                <span style="font-size: 1.375rem;">
+                                    <font class="text-black">Epson</font>
+                                </span>
+                                <span style="font-size: 1.5rem;">&amp;nbsp;</span>
+                                <br />
+                            </h3>
+                            <p>
+                                <font style="color: rgb(150, 148, 148);">
+                                    Epson creates crisp details, rich colors, and quick prints that
+                                    help brands stand out with garments customers trust and love.</font>
+                                <br />
+                            </p>
+                            <p>
+                                <a class="o_translate_inline btn btn-primary"
+                                    href="/technologies/epson">View More</a>
+                                <br />
+                            </p>
+                        </div>
+                        <div
+                            class="o_grid_item o_grid_item_image g-height-6 g-col-lg-3 col-lg-3 o_colored_level o_grid_item_image_contain order-lg-0"
+                            style="z-index: 6; --grid-item-padding-y: 0px; background-color: rgb(255, 255, 255); grid-area: 6 / 10 / 12 / 13; --grid-item-padding-x: 0px; order: 6;">
+                            <img src="/web/image/833-db911bec/image%2026%20%282%29.webp" alt=""
+                                class="img img-fluid o_we_custom_image"
+                                style="width: 100% !important;" data-mimetype="image/webp"
+                                data-original-id="829"
+                                data-original-src="/web/image/829-64497654/image%2026%20%282%29.png"
+                                data-mimetype-before-conversion="image/png" data-resize-width="NaN"
+                                loading="lazy" />
+                        </div>
+                        <div
+                            class="o_colored_level o_grid_item g-col-lg-6 g-height-4 order-lg-0 col-lg-6"
+                            style="grid-area: 1 / 1 / 5 / 7; z-index: 8; order: 0;">
+                            <h2>
+
+                                <font class="text-black">Technology Behind Every Garment</font>
+                                <span class="h2-fs">​</span>
+
+                                <br />
+                            </h2>
+                        </div>
+                        <div
+                            class="o_grid_item g-col-lg-5 o_colored_level g-height-3 col-lg-5 order-lg-0"
+                            style="z-index: 1; --grid-item-padding-y: 0px; --grid-item-padding-x: 16px; grid-area: 5 / 1 / 8 / 6; order: 1;">
+                            <p class="lead">
+                                <font style="color: rgb(150, 148, 148);">
+                                    &amp;nbsp;We use modern technology to create sharper prints,
+                                    brighter colors, and cleaner embroidery. Our advanced methods
+                                    make sure every garment meets high standards, giving your brand
+                                    clear details, bold designs, and a finish that stands out in
+                                    every piece.</font>
+                                <br />
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <section
+                class="s_process_steps pb72 o_colored_level s_process_steps_connector_line pt56"
+                data-vcss="002" data-vxml="002" data-snippet="s_process_steps" data-name="Steps">
+                <svg class="s_process_step_svg_defs position-absolute">
+                    <defs>
+                        <marker class="s_process_steps_arrow_head" markerwidth="15"
+                            markerheight="10" refx="6" refy="6" orient="auto"
+                            id="s_process_steps_arrow_head1752120875051">
+                            <path d="M 2,2 L10,6 L2,10 L6,6 L2,2" vector-effect="non-scaling-size"
+                                style="fill: rgb(95, 81, 95);" />
+                        </marker>
+                    </defs>
+                </svg>
+                <div class="container">
+                    <h3 class="mb-4 text-center">
+                        <br />
+                    </h3>
+                    <h3 class="mb-4 text-center">
+                        <span style="font-size: 2rem;">Our process in 4 easy steps</span>
+
+                    </h3>
+                    <div class="row g-0">
+                        <div
+                            class="col-lg-3 s_process_step position-relative pt24 pb24 o_colored_level">
+                            <svg class="s_process_step_connector position-absolute z-index-1"
+                                viewbox="0 0 210.5 80" preserveaspectratio="none"
+                                style="height: 80px; width: calc(100% - 112px); margin-top: 0px;">
+                                <path d="M 0 40 L 210.5 40" vector-effect="non-scaling-stroke"
+                                    style="stroke: rgb(95, 81, 95);" marker-end="" />
+                            </svg>
+                            <div
+                                class="s_process_step_number d-flex align-items-center justify-content-center mx-auto rounded-circle bg-primary-light bg-o-color-1"
+                                data-name="Step Number">
+                                <h3 class="mb-0 text-primary text-center">
+                                    <font class="text-o-color-4">01</font>
+                                </h3>
+                            </div>
+                            <div class="s_process_step_content mt-3 px-3 text-center">
+                                <h3 class="h4-fs">
+                                    Sign In
+
+                                </h3>
+                                <p>
+                                    <font class="text-600">Create your account, share ideas, and
+                                        access your custom garment order dashboard easily.</font>
+
+                                    <br />
+                                </p>
+                            </div>
+                        </div>
+                        <div
+                            class="col-lg-3 s_process_step position-relative pt24 pb24 o_colored_level">
+                            <svg class="s_process_step_connector position-absolute z-index-1"
+                                viewbox="0 0 210.5 80" preserveaspectratio="none"
+                                style="height: 80px; width: calc(100% - 112px); margin-top: 0px;">
+                                <path d="M 0 40 L 210.5 40" vector-effect="non-scaling-stroke"
+                                    style="stroke: rgb(95, 81, 95);" marker-end="" />
+                            </svg>
+                            <div
+                                class="s_process_step_number d-flex align-items-center justify-content-center mx-auto rounded-circle bg-primary-light bg-o-color-1"
+                                data-name="Step Number">
+                                <h3 class="mb-0 text-primary text-center">
+                                    <font class="text-o-color-4">02</font>
+                                </h3>
+                            </div>
+                            <div class="s_process_step_content mt-3 px-3 text-center">
+                                <h3 class="h4-fs">
+                                    Design Process
+
+                                </h3>
+                                <p>
+                                    <font class="text-600">Collaborate with our team to design
+                                        garments, choose fabrics, and approve final samples
+                                        confidently.</font>
+
+                                    <br />
+                                </p>
+                            </div>
+                        </div>
+                        <div
+                            class="col-lg-3 s_process_step position-relative pt24 pb24 o_colored_level">
+                            <svg class="s_process_step_connector position-absolute z-index-1"
+                                viewbox="0 0 210.5 80" preserveaspectratio="none"
+                                style="height: 80px; width: calc(100% - 112px); margin-top: 0px;">
+                                <path d="M 0 40 L 210.5 40" vector-effect="non-scaling-stroke"
+                                    style="stroke: rgb(95, 81, 95);" marker-end="" />
+                            </svg>
+                            <div
+                                class="s_process_step_number d-flex align-items-center justify-content-center mx-auto rounded-circle bg-primary-light bg-o-color-1"
+                                data-name="Step Number">
+                                <h3 class="mb-0 text-primary text-center">
+                                    <font class="text-o-color-4">03</font>
+                                </h3>
+                            </div>
+                            <div class="s_process_step_content mt-3 px-3 text-center">
+                                <h3 class="h4-fs">
+                                    Production
+
+                                </h3>
+                                <p>
+                                    <font class="text-600">We handle all production stages with
+                                        care, ensuring perfect quality and flawless finishing
+                                        always.</font>
+
+                                    <br />
+                                </p>
+                            </div>
+                        </div>
+                        <div
+                            class="col-lg-3 s_process_step position-relative pt24 pb24 o_colored_level">
+                            <svg class="s_process_step_connector position-absolute z-index-1"
+                                viewbox="0 0 100 20" preserveaspectratio="none">
+                                <path d="M 0 10 L 100 10" vector-effect="non-scaling-stroke"
+                                    style="stroke: rgb(95, 81, 95);" marker-end="" />
+                            </svg>
+                            <div
+                                class="s_process_step_number d-flex align-items-center justify-content-center mx-auto rounded-circle bg-primary-light bg-o-color-1"
+                                data-name="Step Number">
+                                <h3 class="mb-0 text-primary text-center">
+                                    <font class="text-o-color-4">04</font>
+                                </h3>
+                            </div>
+                            <div class="s_process_step_content mt-3 px-3 text-center">
+                                <h3 class="h4-fs">
+                                    Get Delivered
+
+                                </h3>
+                                <p>
+                                    <font class="text-600">Finished garments pass quality checks,
+                                        packed securely, delivered safely to your doorstep on time.</font>
+
+                                    <br />
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <section class="s_image_text_box o_colored_level pt0 pb0 o_cc o_cc4"
+                data-snippet="s_image_text_box" data-name="Image Text Box"
+                style="position: relative;"
+                data-oe-shape-data="{&quot;shape&quot;:&quot;web_editor/Airy/07&quot;,&quot;flip&quot;:[],&quot;showOnMobile&quot;:false,&quot;shapeAnimationSpeed&quot;:&quot;0&quot;}">
+                <div class="o_we_shape o_web_editor_Airy_07" />
+
+                <div class="container-fluid">
+                    <div class="row o_grid_mode" data-row-count="18" style="row-gap: 0px;">
+                        <div
+                            class="o_grid_item o_grid_item_image o_colored_level g-col-lg-6 g-height-18 col-lg-6"
+                            style="background-color: rgb(92, 79, 92); grid-area: 1 / 1 / 19 / 7; z-index: 1; --grid-item-padding-y: 0px; --grid-item-padding-x: 0px;">
+                            <img src="/web/image/855-27e14536/nsrl-view-front.webp" alt=""
+                                class="img img-fluid rounded order-lg-0 o_we_custom_image"
+                                data-mimetype="image/webp" data-original-id="840"
+                                data-original-src="/web/image/840-19c343eb/nsrl-view-front.png"
+                                data-mimetype-before-conversion="image/png" data-resize-width="NaN"
+                                loading="lazy" />
+                        </div>
+
+                        <div class="o_colored_level o_grid_item g-col-lg-5 g-height-3 col-lg-5"
+                            style="z-index: 3; grid-area: 4 / 8 / 7 / 13;">
+                            <h2>
+                                <font class="text-o-color-4">
+                                    About&amp;nbsp;NSRL Garments
+
+                                </font>
+                                <br />
+                            </h2>
+                        </div>
+                        <div class="o_colored_level o_grid_item g-height-8 g-col-lg-4 col-lg-4"
+                            style="z-index: 4; grid-area: 7 / 8 / 15 / 12;">
+                            <p>
+                                <font class="text-o-color-4">NSRL Garments was founded to support
+                                    independent brands, growing companies, and online retailers with
+                                    reliable garment sourcing and production. From design and fabric
+                                    sourcing to samples, bulk orders, packaging, and quality checks,
+                                    we handle every step of the process for you.<br /><br /></font>
+                            </p>
+                            <p>
+                                <font class="text-o-color-4">&amp;nbsp;We believe great ideas
+                                    deserve to be seen and worn. That’s why we work closely with our
+                                    clients at every stage, making sure each garment is made with
+                                    care, meets our high standards, and reflects your brand’s style.
+                                    With NSRL Garments, you can focus on creating while we handle
+                                    the rest.&amp;nbsp;</font>
+                                <br />
+                            </p>
+                            <p>
+                                <a class="o_translate_inline btn btn-secondary" href="/about-us">View
+                                    More</a>
+                                <br />
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <section class="s_freegrid o_colored_level section-padding" data-snippet="s_freegrid"
+                data-name="Free grid">
+                <div class="container-fluid">
+                    <div class="row o_grid_mode" data-row-count="14">
+
+
+                        <div
+                            class="o_grid_item o_grid_item_image g-col-lg-1 g-height-8 col-lg-1 d-lg-block d-none o_snippet_mobile_invisible o_colored_level"
+                            style="z-index: 1; --grid-item-padding-y: 0px; --grid-item-padding-x: 0px; grid-area: 6 / 1 / 14 / 2;"
+                            data-invisible="1">
+                            <img src="/web/image/857-3dcc8f60/nsrl-gallery-img-1.webp" alt=""
+                                class="img img-fluid mx-auto o_we_custom_image"
+                                data-mimetype="image/webp" data-original-id="841"
+                                data-original-src="/web/image/841-d9dedcc7/nsrl-gallery-img-1.png"
+                                data-mimetype-before-conversion="image/png" data-resize-width="NaN"
+                                loading="lazy" />
+                        </div>
+                        <div
+                            class="o_grid_item o_grid_item_image g-col-lg-3 g-height-5 col-lg-3 d-lg-block d-none o_snippet_mobile_invisible o_colored_level"
+                            style="z-index: 2; --grid-item-padding-y: 8px; --grid-item-padding-x: 16px; grid-area: 5 / 2 / 10 / 5;"
+                            data-invisible="1">
+                            <img src="/web/image/854-24e372d2/nsrl-gallery-img-2.webp" alt=""
+                                class="img img-fluid mx-auto o_we_custom_image"
+                                data-mimetype="image/webp" data-original-id="842"
+                                data-original-src="/web/image/842-2ead8449/nsrl-gallery-img-2.png"
+                                data-mimetype-before-conversion="image/png" data-resize-width="NaN"
+                                loading="lazy" />
+                        </div>
+                        <div
+                            class="o_grid_item o_grid_item_image g-col-lg-3 g-height-5 col-lg-3 d-lg-block d-none o_snippet_mobile_invisible o_colored_level"
+                            style="z-index: 3; --grid-item-padding-y: 8px; --grid-item-padding-x: 16px; grid-area: 10 / 2 / 15 / 5;"
+                            data-invisible="1">
+                            <img src="/web/image/858-b99505a7/nsrl-gallery-img-3.webp" alt=""
+                                class="img img-fluid mx-auto o_we_custom_image"
+                                data-mimetype="image/webp" data-original-id="843"
+                                data-original-src="/web/image/843-a59649f3/nsrl-gallery-img-3.png"
+                                data-mimetype-before-conversion="image/png" data-resize-width="NaN"
+                                loading="lazy" />
+                        </div>
+                        <div
+                            class="o_grid_item o_grid_item_image g-col-lg-3 g-height-8 col-lg-3 d-lg-block d-none o_snippet_mobile_invisible o_colored_level"
+                            style="z-index: 4; --grid-item-padding-y: 0px; --grid-item-padding-x: 0px; grid-area: 6 / 5 / 14 / 8;"
+                            data-invisible="1">
+                            <img src="/web/image/859-6796f658/nsrl-gallery-img-4.webp" alt=""
+                                class="img img-fluid mx-auto o_we_custom_image"
+                                data-mimetype="image/webp" data-original-id="844"
+                                data-original-src="/web/image/844-9f873014/nsrl-gallery-img-4.png"
+                                data-mimetype-before-conversion="image/png" data-resize-width="NaN"
+                                loading="lazy" />
+                        </div>
+                        <div
+                            class="o_grid_item o_grid_item_image g-col-lg-3 g-height-10 col-lg-3 o_colored_level"
+                            style="z-index: 5; --grid-item-padding-y: 8px; --grid-item-padding-x: 16px; grid-area: 5 / 8 / 15 / 11;">
+                            <img src="/web/image/861-5e2abfc3/nsrl-gallery-img-5.webp" alt=""
+                                class="img img-fluid mx-auto o_we_custom_image"
+                                data-mimetype="image/webp" data-original-id="845"
+                                data-original-src="/web/image/845-6e393193/nsrl-gallery-img-5.png"
+                                data-mimetype-before-conversion="image/png" data-resize-width="NaN"
+                                loading="lazy" />
+                        </div>
+                        <div
+                            class="o_grid_item o_grid_item_image g-col-lg-2 g-height-8 col-lg-2 d-lg-block d-none o_snippet_mobile_invisible o_colored_level"
+                            style="z-index: 6; --grid-item-padding-y: 0px; --grid-item-padding-x: 0px; grid-area: 6 / 11 / 14 / 13;"
+                            data-invisible="1">
+                            <img src="/web/image/862-cc65cd17/nsrl-gallery-img-6.webp" alt=""
+                                class="img img-fluid mx-auto o_we_custom_image"
+                                data-mimetype="image/webp" data-original-id="846"
+                                data-original-src="/web/image/846-77f40683/nsrl-gallery-img-6.png"
+                                data-mimetype-before-conversion="image/png" data-resize-width="NaN"
+                                loading="lazy" />
+                        </div>
+                        <div class="o_grid_item g-col-lg-8 o_colored_level g-height-2 col-lg-8"
+                            style="z-index: 7; grid-area: 2 / 3 / 4 / 11;">
+                            <h3 style="text-align: center;">
+                                <span class="h2-fs">
+                                    <font class="text-o-color-1">Visual Gallery</font>
+                                </span>
+                                <br />
+                                <br />
+                            </h3>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <section class="s_features_wave o_colored_level o_cc o_cc5 section-padding"
+                data-snippet="s_features_wave" data-name="Features Wave"
+                style="background-color: rgb(238, 238, 238); position: relative;"
+                data-oe-shape-data="{&quot;shape&quot;:&quot;web_editor/Wavy/11&quot;,&quot;flip&quot;:[],&quot;showOnMobile&quot;:false,&quot;shapeAnimationSpeed&quot;:&quot;0&quot;}">
+                <div class="o_we_shape o_web_editor_Wavy_11" />
+
+                <div class="container">
+                    <div class="row s_nb_column_fixed o_grid_mode" data-row-count="14"
+                        style="gap: 10px;">
+                        <div
+                            class="o_colored_level o_grid_item g-col-lg-12 g-height-2 col-lg-12 order-lg-0"
+                            style="grid-area: 1 / 1 / 3 / 13; z-index: 1; order: 0;">
+                            <h3 style="text-align: center;">
+                                <span class="h2-fs">
+                                    <font class="text-black">Why Choose Us?</font>
+                                </span>
+                            </h3>
+                        </div>
+                        <div
+                            class="o_colored_level o_grid_item g-col-lg-4 g-height-5 col-lg-4 order-lg-0"
+                            style="grid-area: 5 / 1 / 10 / 5; z-index: 3; order: 2;">
+                            <img src="/web/image/848-72eb0cd9/icon-tshirt.svg" alt=""
+                                class="d-block mx-auto img img-fluid o_we_custom_image rounded"
+                                style="padding: 20px;" data-mimetype="image/svg+xml"
+                                data-original-id="848"
+                                data-original-src="/web/image/848-72eb0cd9/icon-tshirt.svg"
+                                data-mimetype-before-conversion="image/svg+xml" loading="lazy" />
+                            <br />
+                            <h4 style="text-align: center;">
+                                <font class="text-black">
+                                    Premium Quality Fabrics
+
+                                </font>
+                                <br />
+                            </h4>
+                            <p style="text-align: center;">
+                                <font style="color: rgb(110, 110, 110);">Each garment is
+                                    crafted&amp;nbsp;with care, using&amp;nbsp;quality fabrics
+                                    and&amp;nbsp;perfect stitching for long- lasting results.
+
+                                </font>
+                                <br />
+                            </p>
+                        </div>
+                        <div
+                            class="o_colored_level o_grid_item g-col-lg-4 g-height-5 col-lg-4 order-lg-0"
+                            style="grid-area: 5 / 5 / 10 / 9; z-index: 4; order: 3;">
+                            <img src="/web/image/847-e3fae553/icon-production.svg" alt=""
+                                class="d-block mx-auto img img-fluid o_we_custom_image rounded"
+                                style="padding: 20px;" data-mimetype="image/svg+xml"
+                                data-original-id="847"
+                                data-original-src="/web/image/847-e3fae553/icon-production.svg"
+                                data-mimetype-before-conversion="image/svg+xml" loading="lazy" />
+                            <br />
+                            <h4 style="text-align: center;">
+                                <font class="text-black">
+                                    &amp;nbsp;
+                                    &amp;nbsp;
+                                    &amp;nbsp;End-to-End Production Support</font>
+                                <br />
+                            </h4>
+                            <p style="text-align: center; margin-bottom: 0px;">
+                                <font style="color: rgb(110, 110, 110);">From design to final
+                                    delivery, we handle everything smoothly, so your brand grows
+                                    without stress.</font>
+                            </p>
+                        </div>
+                        <div
+                            class="o_colored_level o_grid_item g-col-lg-4 g-height-5 col-lg-4 order-lg-0"
+                            style="grid-area: 5 / 9 / 10 / 13; z-index: 5; order: 4;">
+                            <img src="/web/image/849-48e1c293/icon-stack.svg" alt=""
+                                class="d-block mx-auto img img-fluid o_we_custom_image rounded"
+                                style="padding: 20px;" data-mimetype="image/svg+xml"
+                                data-original-id="849"
+                                data-original-src="/web/image/849-48e1c293/icon-stack.svg"
+                                data-mimetype-before-conversion="image/svg+xml" loading="lazy" />
+                            <br />
+                            <h4 style="text-align: center;">
+                                <font class="text-black">
+                                    &amp;nbsp;
+                                    &amp;nbsp;Flexible MOQ, Big or Small</font>
+                                <br />
+                            </h4>
+                            <p style="text-align: center; margin-bottom: 0px;">
+                                <font style="color: rgb(110, 110, 110);">
+                                    &amp;nbsp;
+
+                                    Order what you need, whether it’s a&amp;nbsp;small custom run or
+                                    large bulk&amp;nbsp;production, we adapt.&amp;nbsp;&amp;nbsp;</font>
+                            </p>
+                            <p style="text-align: center; margin-bottom: 0px;">
+                                <br />
+                            </p>
+                            <p style="text-align: center;">
+                                <font style="color: rgb(110, 110, 110);">&amp;nbsp;</font>
+                                <br />
+                            </p>
+                        </div>
+
+                        <div
+                            class="o_colored_level o_grid_item g-col-lg-4 g-height-5 col-lg-4 order-lg-0"
+                            style="grid-area: 10 / 5 / 15 / 9; z-index: 7; order: 5;">
+                            <img src="/web/image/851-3aea79ff/icon-pen.svg" alt=""
+                                class="d-block mx-auto rounded img img-fluid o_we_custom_image"
+                                style="padding: 20px;" data-mimetype="image/svg+xml"
+                                data-original-id="851"
+                                data-original-src="/web/image/851-3aea79ff/icon-pen.svg"
+                                data-mimetype-before-conversion="image/svg+xml" loading="lazy" />
+                            <br />
+                            <h4 style="text-align: center;">
+                                <font class="text-black">
+                                    &amp;nbsp;
+                                    &amp;nbsp;Custom Designs, Made Easy</font>
+                                <br />
+                            </h4>
+                            <p style="text-align: center; margin-bottom: 0px;"><font
+                                    style="color: rgb(110, 110, 110);">Bring your ideas to life
+                                fast. We make unique designs simple, from patterns to special
+                                prints.</font>​</p>
+                        </div>
+                        <div
+                            class="o_colored_level o_grid_item g-col-lg-4 g-height-5 col-lg-4 order-lg-0"
+                            style="grid-area: 10 / 9 / 15 / 13; z-index: 8; order: 6;">
+                            <img src="/web/image/852-d4a3fac3/icon-sheild.svg" alt=""
+                                class="d-block mx-auto rounded img img-fluid o_we_custom_image"
+                                style="padding: 20px;" data-mimetype="image/svg+xml"
+                                data-original-id="852"
+                                data-original-src="/web/image/852-d4a3fac3/icon-sheild.svg"
+                                data-mimetype-before-conversion="image/svg+xml" loading="lazy" />
+                            <br />
+                            <h4 style="text-align: center;">
+                                <font class="text-black">Strict Quality Checks</font>
+                            </h4>
+                            <p style="text-align: center; margin-bottom: 0px;">
+                                <font style="color: rgb(110, 110, 110);">Every piece passes careful
+                                    checks to make sure it meets our high standards before delivery
+                                    always.​</font>
+                            </p>
+                        </div>
+                        <div
+                            class="o_colored_level o_grid_item g-col-lg-4 g-height-5 col-lg-4 order-lg-0"
+                            style="z-index: 6; grid-area: 10 / 1 / 15 / 5; order: 7;">
+                            <img src="/web/image/850-1bde28b3/icon-time.svg" alt=""
+                                class="d-block mx-auto img img-fluid o_we_custom_image rounded"
+                                style="padding: 20px;" data-mimetype="image/svg+xml"
+                                data-original-id="850"
+                                data-original-src="/web/image/850-1bde28b3/icon-time.svg"
+                                data-mimetype-before-conversion="image/svg+xml" loading="lazy" />
+                            <br />
+                            <h4 style="text-align: center;">
+                                <font class="text-black">
+                                    &amp;nbsp;
+                                    &amp;nbsp;On-Time Delivery, Every Time​</font>
+                                <br />
+                            </h4>
+                            <p style="text-align: center; margin-bottom: 0px;">
+                                <font style="color: rgb(110, 110, 110);">Your orders arrive when
+                                    promised. Our reliable timelines help your brand stay on track
+                                    easily.​</font>
+                            </p>
+                            <p style="text-align: center; margin-bottom: 0px;">
+                                <br />
+                            </p>
+                            <p style="text-align: center;">
+                                <br />
+                            </p>
+                        </div>
+                        <div
+                            class="o_colored_level o_grid_item g-col-lg-12 g-height-2 col-lg-12 order-lg-0"
+                            style="z-index: 2; grid-area: 3 / 1 / 5 / 13; order: 1;">
+                            <p style="text-align: center; margin-bottom: 0px;">
+                                <font style="color: rgb(110, 110, 110);">NSRL Garments delivers
+                                    quality you can trust, smooth production, and reliable support
+                                    from start to finish. We handle every&amp;nbsp;detail with care,
+                                    so your brand gets the best garments, made on time, every time.​</font>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <section class="s_text_image o_colored_level pt32 pb48 o_cc o_cc4"
+                data-snippet="s_image_text" data-name="Image - Text"
+                style="background-color: rgb(92, 79, 92);">
+                <div class="container-fluid">
+                    <div class="row align-items-center">
+
+                        <div class="pt16 pb16 o_colored_level col-lg-6"
+                            style="background-color: rgb(92, 79, 92);">
+                            <img src="/web/image/863-d34b2d47/prestige-kit-box.webp" alt=""
+                                class="img img-fluid o_we_custom_image mx-auto d-block rounded"
+                                data-mimetype="image/webp" data-original-id="853"
+                                data-original-src="/web/image/853-03195a82/prestige-kit-box.png"
+                                data-mimetype-before-conversion="image/png" data-resize-width="NaN"
+                                loading="lazy" />
+                        </div>
+                        <div class="offset-lg-1 pt16 pb16 o_colored_level col-lg-4">
+                            <h2 class="h3-fs"> NSRL&amp;nbsp;<br />Prestige Kit </h2>
+                            <p>
+
+                                <span style="font-size: 1.125rem;">
+                                    <em>“A Gift That Builds Trust and Confidence.”&amp;nbsp;</em>
+                                </span><br /><br />Our
+                                free Prestige Kit for genuine customers includes a&amp;nbsp;jersey
+                                and embroidered swatches in a premium box so you&amp;nbsp;can
+                                experience our quality and place your order confidently. </p>
+                            <p>
+                                <a href="/heritage-kit" class="btn btn-secondary">Get Now</a>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </t>
+</t>
