@@ -2,292 +2,251 @@ import tkinter as tk
 import psutil
 import time
 import threading
-from math import floor
+import json
+import os
+from collections import deque
 
-class ModernCanvas(tk.Canvas):
-    """Modern canvas with gradient and blur effects"""
-    def __init__(self, parent, **kwargs):
-        super().__init__(parent, **kwargs)
-        self.create_modern_background()
-    
-    def create_modern_background(self):
-        """Create modern background with gradient and depth effects"""
-        # Main background with gradient effect
-        self.create_rounded_rectangle(0, 0, self.winfo_reqwidth(), self.winfo_reqheight(), 
-                                    radius=16, fill='#1a1a1a', outline='#333333', width=1, tags='main_bg')
-        
-        # Inner glow effect
-        self.create_rounded_rectangle(2, 2, self.winfo_reqwidth()-2, self.winfo_reqheight()-2, 
-                                    radius=14, fill='#222222', outline='#444444', width=1, tags='inner_glow')
-        
-        # Top highlight for modern look
-        self.create_rounded_rectangle(3, 3, self.winfo_reqwidth()-3, 20, 
-                                    radius=13, fill='#2a2a2a', outline='', tags='highlight')
+CONFIG_FILE = os.path.join(
+    os.environ.get('APPDATA', os.path.expanduser('~')), 'Speedify', 'config.json'
+)
 
-    def create_rounded_rectangle(self, x1, y1, x2, y2, radius=25, **kwargs):
-        """Create a rounded rectangle on the canvas"""
-        points = [
-            x1 + radius, y1,
-            x2 - radius, y1,
-            x2, y1,
-            x2, y1 + radius,
-            x2, y2 - radius,
-            x2, y2,
-            x2 - radius, y2,
-            x1 + radius, y2,
-            x1, y2,
-            x1, y2 - radius,
-            x1, y1 + radius,
-            x1, y1
-        ]
-        return self.create_polygon(points, **kwargs, smooth=True)
+# Near-black chroma key — becomes transparent.
+# Using #000001 instead of pure black so Label widgets (#1e1e1e bg) are never
+# accidentally treated as transparent.
+CHROMA = "#000001"
+
+
+def _load_config():
+    try:
+        with open(CONFIG_FILE) as f:
+            return json.load(f)
+    except Exception:
+        return {}
+
+
+def _save_config(data):
+    try:
+        os.makedirs(os.path.dirname(CONFIG_FILE), exist_ok=True)
+        with open(CONFIG_FILE, 'w') as f:
+            json.dump(data, f)
+    except Exception:
+        pass
+
+
+def format_speed(mbps, prefix):
+    """Adaptive units: KB/s / Mbps / Gbps."""
+    if mbps < 0.001:
+        return f"{prefix} 0 KB/s"
+    if mbps < 1.0:
+        kbps = mbps * 1024
+        return f"{prefix} {kbps:.0f} KB/s" if kbps >= 10 else f"{prefix} {kbps:.1f} KB/s"
+    if mbps >= 1000:
+        return f"{prefix} {mbps / 1000:.1f} Gbps"
+    return f"{prefix} {mbps:.1f} Mbps"
+
 
 class NetworkSpeedMonitor:
+    W, H = 240, 32        # compact pill dimensions
+    BG   = "#1e1e1e"      # pill fill  (must NOT equal CHROMA)
+    SEP  = "#383838"      # separator line
+    DL   = "#00D4AA"      # teal  – download
+    UL   = "#FF6B6B"      # coral – upload
+    DIM  = "#666666"      # close-button idle colour
+    FONT = ("Segoe UI", 10, "bold")
+
     def __init__(self, root):
         self.root = root
-        self.root.title("Speedify")
-        self.root.overrideredirect(True)  # Remove window decorations
-        self.root.wm_attributes("-topmost", True)  # Keep on top
-        self.root.attributes("-alpha", 0.95)  # Slight transparency
-        
-        # Modern color scheme
-        self.bg_color = "#1a1a1a"
-        self.card_color = "#222222"
-        self.border_color = "#444444"
-        self.dl_color = "#00D4AA"  # Modern teal
-        self.ul_color = "#FF6B6B"  # Modern coral
-        self.text_color = "#FFFFFF"
-        self.secondary_text = "#AAAAAA"
-        self.accent_color = "#4A90E2"  # Modern blue
-        
-        # Window size - optimized for modern design
-        self.window_width = 320
-        self.window_height = 60
-        
-        # Center the window initially
-        screen_width = root.winfo_screenwidth()
-        screen_height = root.winfo_screenheight()
-        x = (screen_width - self.window_width) // 2
-        y = (screen_height - self.window_height) // 2
-        self.root.geometry(f"{self.window_width}x{self.window_height}+{x}+{y}")
-        
-        # Main frame
-        self.frame = tk.Frame(root, bg='black', bd=0)
-        self.frame.pack(fill=tk.BOTH, expand=True)
-        
-        # Modern canvas
-        self.canvas = ModernCanvas(self.frame, bg='black', highlightthickness=0, 
-                                 width=self.window_width, height=self.window_height)
-        self.canvas.pack(fill=tk.BOTH, expand=True)
-        
-        # Modern close button
-        self.create_modern_close_button()
-        
-        # Modern speed display
-        self.create_modern_speed_display()
-        
-        # Dragging functionality
-        self.root.bind("<ButtonPress-1>", self.start_move)
-        self.root.bind("<ButtonRelease-1>", self.stop_move)
-        self.root.bind("<B1-Motion>", self.do_move)
-        
-        # Prevent dragging when clicking the close button
-        self.close_button.bind("<ButtonPress-1>", lambda e: e.widget.event_generate("<<CloseButton>>"))
-        self.root.bind("<<CloseButton>>", lambda e: "break")
+        root.title("Speedify")
+        root.overrideredirect(True)          # no title bar
+        root.configure(bg=CHROMA)
+        root.wm_attributes("-transparentcolor", CHROMA)   # pill shape
+        root.wm_attributes("-topmost", True)
+        root.lift()
+        root.focus_force()
 
-        # Network Speed Tracking
-        self.initial_bytes = self.get_network_bytes()
-        self.last_time = time.time()
-        self.download_history = []
-        self.upload_history = []
-        self.sample_window = 10
+        # ── position ──────────────────────────────────────────────────────────
+        cfg = _load_config()
+        self._on_top = tk.BooleanVar(value=cfg.get('on_top', True))
+        self._apply_on_top()
 
-        # Start monitoring
-        self.monitoring = True
-        self.network_thread = threading.Thread(target=self.update_network_speed, daemon=True)
-        self.network_thread.start()
+        sw, sh = root.winfo_screenwidth(), root.winfo_screenheight()
+        cx, cy = cfg.get('x'), cfg.get('y')
+        if (cx is not None and cy is not None
+                and 0 <= cx <= sw - self.W and 0 <= cy <= sh - self.H):
+            x, y = cx, cy
+        else:
+            x, y = (sw - self.W) // 2, (sh - self.H) // 2
+        root.geometry(f"{self.W}x{self.H}+{x}+{y}")
 
-    def create_modern_close_button(self):
-        """Create a modern close button with hover effects"""
-        # Close button background
-        self.canvas.create_oval(self.window_width-35, 12, self.window_width-12, 35, 
-                               fill=self.card_color, outline=self.border_color, width=1, tags='close_bg')
-        
-        # Close button text
-        self.close_button = tk.Button(self.canvas, text="×", font=("SF Pro Display", 14, "bold"),
-                                    bg=self.card_color, fg=self.text_color, 
-                                    borderwidth=0, command=self.exit_app,
-                                    cursor="hand2", activebackground='#FF6B6B',
-                                    activeforeground='#FFFFFF')
-        self.close_button.place(x=self.window_width-30, y=10)
-        
-        # Hover effects
-        self.close_button.bind("<Enter>", self.on_close_hover)
-        self.close_button.bind("<Leave>", self.on_close_leave)
+        # ── canvas ────────────────────────────────────────────────────────────
+        self.cv = tk.Canvas(root, bg=CHROMA, highlightthickness=0,
+                            width=self.W, height=self.H)
+        self.cv.pack(fill=tk.BOTH, expand=True)
 
-    def create_modern_speed_display(self):
-        """Create modern speed display with cards"""
-        # Download card
-        dl_card_x = 20
-        dl_card_y = 15
-        dl_card_width = 120
-        dl_card_height = 35
-        
-        # Download card background
-        self.canvas.create_rounded_rectangle(dl_card_x, dl_card_y, 
-                                           dl_card_x + dl_card_width, dl_card_y + dl_card_height,
-                                           radius=10, fill=self.card_color, outline=self.border_color, width=1)
-        
-        # Download label
-        self.download_label = tk.Label(self.canvas, text="↓ 0.0", 
-                                     font=("SF Pro Display", 13, "bold"), bg=self.card_color, 
-                                     fg=self.dl_color, padx=15, pady=5)
-        self.download_label.place(x=dl_card_x + 10, y=dl_card_y + 8)
-        
-        # Download unit
-        dl_unit_label = tk.Label(self.canvas, text="Mbps", 
-                               font=("SF Pro Display", 9), bg=self.card_color, 
-                               fg=self.secondary_text)
-        dl_unit_label.place(x=dl_card_x + 85, y=dl_card_y + 10)
+        self._draw_pill()
+        self._build_labels()
+        self._build_close()
+        self._build_menu()
 
-        # Upload card
-        ul_card_x = 160
-        ul_card_y = 15
-        ul_card_width = 120
-        ul_card_height = 35
-        
-        # Upload card background
-        self.canvas.create_rounded_rectangle(ul_card_x, ul_card_y, 
-                                           ul_card_x + ul_card_width, ul_card_y + ul_card_height,
-                                           radius=10, fill=self.card_color, outline=self.border_color, width=1)
-        
-        # Upload label
-        self.upload_label = tk.Label(self.canvas, text="↑ 0.0", 
-                                   font=("SF Pro Display", 13, "bold"), bg=self.card_color, 
-                                   fg=self.ul_color, padx=15, pady=5)
-        self.upload_label.place(x=ul_card_x + 10, y=ul_card_y + 8)
-        
-        # Upload unit
-        ul_unit_label = tk.Label(self.canvas, text="Mbps", 
-                               font=("SF Pro Display", 9), bg=self.card_color, 
-                               fg=self.secondary_text)
-        ul_unit_label.place(x=ul_card_x + 85, y=ul_card_y + 10)
+        # ── drag state ────────────────────────────────────────────────────────
+        # Anchor-offset method: on press store (mouse_abs - window_pos).
+        # On move: new_pos = mouse_abs - stored_offset.
+        # Works even if the B1-Motion event fires on multiple widgets because
+        # recomputing the same expression always yields the same result.
+        self._dragging = False
+        self._off_x = self._off_y = 0
 
-    def on_close_hover(self, event):
-        """Handle close button hover effect"""
-        self.close_button.config(fg='#FFFFFF', bg='#FF6B6B')
-        self.canvas.itemconfig('close_bg', fill='#FF6B6B')
+        # Bind to root → catches events propagated from every child widget.
+        # Also bind directly to canvas + labels as a belt-and-suspenders guard,
+        # because some Label clicks don't propagate on all Windows versions.
+        self._attach_drag(root, self.cv, self.dl_lbl, self.ul_lbl)
 
-    def on_close_leave(self, event):
-        """Handle close button leave effect"""
-        self.close_button.config(fg=self.text_color, bg=self.card_color)
-        self.canvas.itemconfig('close_bg', fill=self.card_color)
+        # ── network thread ────────────────────────────────────────────────────
+        io = psutil.net_io_counters()
+        self._prev  = (io.bytes_recv, io.bytes_sent, time.time())
+        self._dl_h  = deque(maxlen=8)
+        self._ul_h  = deque(maxlen=8)
+        self._alive = True
+        threading.Thread(target=self._monitor, daemon=True).start()
 
-    def start_move(self, event):
-        """Begin dragging the window"""
-        self.x = event.x_root
-        self.y = event.y_root
+    # ── drawing ───────────────────────────────────────────────────────────────
 
-    def stop_move(self, event):
-        """Stop dragging the window"""
-        self.x = None
-        self.y = None
+    def _draw_pill(self):
+        w, h, r = self.W, self.H, self.H // 2
+        pts = [
+            r, 0,   w-r, 0,   w, 0,
+            w, r,   w, h-r,   w, h,
+            w-r, h, r, h,     0, h,
+            0, h-r, 0, r,     0, 0,
+        ]
+        self.cv.create_polygon(pts, smooth=True,
+                               fill=self.BG, outline="#333333", width=1)
+        mid = self.W // 2
+        self.cv.create_line(mid, 7, mid, self.H - 7, fill=self.SEP, width=1)
 
-    def do_move(self, event):
-        """Handle window dragging"""
-        if self.x is None or self.y is None:
+    # ── widgets ───────────────────────────────────────────────────────────────
+
+    def _build_labels(self):
+        mid, cy = self.W // 2, self.H // 2
+        self.dl_lbl = tk.Label(self.cv, text="↓ 0 Mbps",
+                               font=self.FONT, bg=self.BG, fg=self.DL)
+        self.dl_lbl.place(x=8, y=cy, anchor="w")
+
+        self.ul_lbl = tk.Label(self.cv, text="↑ 0 Mbps",
+                               font=self.FONT, bg=self.BG, fg=self.UL)
+        self.ul_lbl.place(x=mid + 5, y=cy, anchor="w")
+
+    def _build_close(self):
+        self.x_lbl = tk.Label(self.cv, text="×", font=("Segoe UI", 11),
+                              bg=self.BG, fg=self.DIM, cursor="hand2")
+        self.x_lbl.place(x=self.W - 6, y=self.H // 2, anchor="e")
+        self.x_lbl.bind("<Enter>",         lambda _: self.x_lbl.config(fg="#FF6B6B"))
+        self.x_lbl.bind("<Leave>",         lambda _: self.x_lbl.config(fg=self.DIM))
+        self.x_lbl.bind("<ButtonPress-1>", self._close_click)
+        self.x_lbl.bind("<Button-3>",      self._show_menu)
+
+    def _build_menu(self):
+        m = tk.Menu(self.root, tearoff=0,
+                    bg="#2a2a2a", fg="#FFFFFF",
+                    activebackground="#444444", activeforeground="#FFFFFF",
+                    font=("Segoe UI", 10), relief="flat")
+        m.add_checkbutton(label="Always on Top",
+                          variable=self._on_top, command=self._apply_on_top)
+        m.add_separator()
+        m.add_command(label="Reset Position", command=self._reset_pos)
+        m.add_separator()
+        m.add_command(label="Close", command=self.quit)
+        self._menu = m
+
+    # ── drag ──────────────────────────────────────────────────────────────────
+
+    def _attach_drag(self, *widgets):
+        for w in widgets:
+            w.bind("<ButtonPress-1>",   self._drag_start)
+            w.bind("<ButtonRelease-1>", self._drag_stop)
+            w.bind("<B1-Motion>",       self._drag_move)
+            w.bind("<Button-3>",        self._show_menu)
+
+    def _drag_start(self, e):
+        self._dragging = True
+        self._off_x = e.x_root - self.root.winfo_x()
+        self._off_y = e.y_root - self.root.winfo_y()
+
+    def _drag_stop(self, e):
+        self._dragging = False
+
+    def _drag_move(self, e):
+        if not self._dragging:
             return
-        deltax = event.x_root - self.x
-        deltay = event.y_root - self.y
-        x = self.root.winfo_x() + deltax
-        y = self.root.winfo_y() + deltay
-        self.root.geometry(f"+{x}+{y}")
-        self.x = event.x_root
-        self.y = event.y_root
+        # Anchor-offset: no accumulation, idempotent when called multiple times
+        self.root.geometry(f"+{e.x_root - self._off_x}+{e.y_root - self._off_y}")
 
-    def get_network_bytes(self):
-        """Get current network bytes for all network interfaces."""
-        net_io = psutil.net_io_counters()
-        return {'download': net_io.bytes_recv, 'upload': net_io.bytes_sent, 'timestamp': time.time()}
+    def _close_click(self, e):
+        self._dragging = False           # cancel any live drag
+        self.root.after(1, self.quit)    # quit after event chain finishes
+        return "break"                   # stop propagation → no drag_start on root
 
-    def calculate_network_speed(self, initial_bytes, current_bytes):
-        """Calculate network speed with high accuracy."""
-        time_diff = current_bytes['timestamp'] - initial_bytes['timestamp']
-        if time_diff <= 0:
-            return 0, 0
-        download_bytes = current_bytes['download'] - initial_bytes['download']
-        upload_bytes = current_bytes['upload'] - initial_bytes['upload']
-        download_speed = (download_bytes * 8) / (time_diff * 1024 * 1024)
-        upload_speed = (upload_bytes * 8) / (time_diff * 1024 * 1024)
-        return download_speed, upload_speed
+    # ── interactions ──────────────────────────────────────────────────────────
 
-    def update_network_speed(self):
-        """Continuously monitor network speed with smoothing."""
-        while self.monitoring:
+    def _show_menu(self, e):
+        try:
+            self._menu.tk_popup(e.x_root, e.y_root)
+        finally:
+            self._menu.grab_release()
+
+    def _apply_on_top(self):
+        self.root.wm_attributes("-topmost", self._on_top.get())
+
+    def _reset_pos(self):
+        sw, sh = self.root.winfo_screenwidth(), self.root.winfo_screenheight()
+        self.root.geometry(f"+{(sw - self.W) // 2}+{(sh - self.H) // 2}")
+
+    # ── network ───────────────────────────────────────────────────────────────
+
+    def _monitor(self):
+        while self._alive:
             try:
-                current_bytes = self.get_network_bytes()
-                dl_speed, ul_speed = self.calculate_network_speed(self.initial_bytes, current_bytes)
-                
-                self.download_history.append(dl_speed)
-                self.upload_history.append(ul_speed)
-                
-                if len(self.download_history) > self.sample_window:
-                    self.download_history.pop(0)
-                    self.upload_history.pop(0)
-                
-                avg_dl = sum(self.download_history) / len(self.download_history)
-                avg_ul = sum(self.upload_history) / len(self.upload_history)
-                
-                self.root.after(0, self.update_labels, avg_dl, avg_ul)
-                self.initial_bytes = current_bytes
-                
-                elapsed = time.time() - current_bytes['timestamp']
-                time.sleep(max(0.1, 1.0 - elapsed))
+                pr, ps, pt = self._prev
+                io = psutil.net_io_counters()
+                cr, cs, ct = io.bytes_recv, io.bytes_sent, time.time()
+                dt = ct - pt
+                if dt > 0:
+                    dl = max(0.0, (cr - pr) * 8 / (dt * 1e6))
+                    ul = max(0.0, (cs - ps) * 8 / (dt * 1e6))
+                    self._dl_h.append(dl)
+                    self._ul_h.append(ul)
+                    self.root.after(0, self._refresh,
+                                    sum(self._dl_h) / len(self._dl_h),
+                                    sum(self._ul_h) / len(self._ul_h))
+                self._prev = cr, cs, ct
+                time.sleep(1.0)
+            except Exception:
+                time.sleep(2.0)
 
-            except Exception as e:
-                print(f"Error: {e}")
-                break
+    def _refresh(self, dl, ul):
+        self.dl_lbl.config(text=format_speed(dl, "↓"), fg=self._tint(self.DL, dl))
+        self.ul_lbl.config(text=format_speed(ul, "↑"), fg=self._tint(self.UL, ul))
 
-    def update_labels(self, download, upload):
-        """Update speed labels with dynamic colors and modern styling."""
-        dl_text = f"↓ {download:.1f}" if download % 1 else f"↓ {floor(download)}"
-        ul_text = f"↑ {upload:.1f}" if upload % 1 else f"↑ {floor(upload)}"
-        
-        self.download_label.config(text=dl_text)
-        self.upload_label.config(text=ul_text)
-        
-        # Dynamic color intensity based on speed
-        dl_intensity = min(100, int(download * 25))
-        ul_intensity = min(100, int(upload * 25))
-        
-        # Enhanced color transitions
-        dl_color = self._adjust_color(self.dl_color, dl_intensity)
-        ul_color = self._adjust_color(self.ul_color, ul_intensity)
-        
-        self.download_label.config(fg=dl_color)
-        self.upload_label.config(fg=ul_color)
+    @staticmethod
+    def _tint(col, mbps):
+        r, g, b = (int(col[i:i + 2], 16) for i in (1, 3, 5))
+        f = 1 + min(1.0, mbps / 100) * 0.5
+        return f"#{min(255, int(r*f)):02x}{min(255, int(g*f)):02x}{min(255, int(b*f)):02x}"
 
-    def _adjust_color(self, hex_color, intensity):
-        """Adjust color brightness based on speed intensity with enhanced algorithm"""
-        r, g, b = tuple(int(hex_color[i:i+2], 16) for i in (1, 3, 5))
-        
-        # Enhanced brightness adjustment
-        brightness_factor = 1 + (intensity / 100) * 0.6
-        r = min(255, int(r * brightness_factor))
-        g = min(255, int(g * brightness_factor))
-        b = min(255, int(b * brightness_factor))
-        
-        return f"#{r:02x}{g:02x}{b:02x}"
+    # ── exit ──────────────────────────────────────────────────────────────────
 
-    def exit_app(self):
-        """Clean up and exit the application"""
-        self.monitoring = False
+    def quit(self):
+        self._alive = False
+        _save_config({'x': self.root.winfo_x(), 'y': self.root.winfo_y(),
+                      'on_top': self._on_top.get()})
         self.root.destroy()
+
 
 def main():
     root = tk.Tk()
-    app = NetworkSpeedMonitor(root)
+    NetworkSpeedMonitor(root)
     root.mainloop()
+
 
 if __name__ == "__main__":
     main()
