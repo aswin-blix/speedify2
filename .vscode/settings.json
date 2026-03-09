@@ -1,3 +1,12 @@
 {
-    "liveServer.settings.port": 5501
+  "python.defaultInterpreterPath": "python",
+  "editor.formatOnSave": true,
+  "editor.tabSize": 4,
+  "editor.insertSpaces": true,
+  "files.trimTrailingWhitespace": true,
+  "files.exclude": {
+    "**/__pycache__": true,
+    "**/*.pyc": true,
+    "build/": true
+  }
 }

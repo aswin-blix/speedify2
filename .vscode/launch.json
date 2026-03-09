@@ -1,0 +1,12 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Run Speedify",
+      "type": "debugpy",
+      "request": "launch",
+      "program": "${workspaceFolder}/speedify.py",
+      "console": "integratedTerminal"
+    }
+  ]
+}

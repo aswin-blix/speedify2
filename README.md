@@ -47,7 +47,7 @@
 
 ```bash
 # Clone the repository
-git clone https://github.com/your-username/speedify.git
+git clone https://github.com/bnp-aswin/speedify2
 cd speedify
 
 # Install dependencies
