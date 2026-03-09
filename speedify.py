@@ -10,10 +10,14 @@ CONFIG_FILE = os.path.join(
     os.environ.get('APPDATA', os.path.expanduser('~')), 'Speedify', 'config.json'
 )
 
-# Near-black chroma key — becomes transparent.
-# Using #000001 instead of pure black so Label widgets (#1e1e1e bg) are never
-# accidentally treated as transparent.
+# Near-black chroma key → Windows makes these pixels transparent (pill shape).
+# Must NOT match any widget bg colour (#1e1e1e, #2a2a2a, etc.).
 CHROMA = "#000001"
+
+# Layout constants (px)
+PAD   = 8    # left / right outer padding
+INNER = 8    # gap on each side of the separator line
+MIN_W = 150  # never shrink below this
 
 
 def _load_config():
@@ -46,62 +50,73 @@ def format_speed(mbps, prefix):
 
 
 class NetworkSpeedMonitor:
-    W, H = 240, 32        # compact pill dimensions
-    BG   = "#1e1e1e"      # pill fill  (must NOT equal CHROMA)
-    SEP  = "#383838"      # separator line
-    DL   = "#00D4AA"      # teal  – download
-    UL   = "#FF6B6B"      # coral – upload
-    DIM  = "#666666"      # close-button idle colour
+    H    = 32
+    W    = MIN_W          # will be overwritten by _autosize()
+    BG   = "#1e1e1e"
+    SEP  = "#383838"
+    DL   = "#00D4AA"
+    UL   = "#FF6B6B"
+    DIM  = "#666666"
     FONT = ("Segoe UI", 10, "bold")
 
     def __init__(self, root):
         self.root = root
         root.title("Speedify")
-        root.overrideredirect(True)          # no title bar
+        root.overrideredirect(True)
         root.configure(bg=CHROMA)
-        root.wm_attributes("-transparentcolor", CHROMA)   # pill shape
+        root.wm_attributes("-transparentcolor", CHROMA)
         root.wm_attributes("-topmost", True)
         root.lift()
         root.focus_force()
 
-        # ── position ──────────────────────────────────────────────────────────
+        # Position
         cfg = _load_config()
         self._on_top = tk.BooleanVar(value=cfg.get('on_top', True))
         self._apply_on_top()
 
         sw, sh = root.winfo_screenwidth(), root.winfo_screenheight()
         cx, cy = cfg.get('x'), cfg.get('y')
-        if (cx is not None and cy is not None
-                and 0 <= cx <= sw - self.W and 0 <= cy <= sh - self.H):
-            x, y = cx, cy
+        if cx is not None and cy is not None and 0 <= cx <= sw - 200 and 0 <= cy <= sh - self.H:
+            self._start_x, self._start_y = cx, cy
         else:
-            x, y = (sw - self.W) // 2, (sh - self.H) // 2
-        root.geometry(f"{self.W}x{self.H}+{x}+{y}")
+            self._start_x = (sw - 200) // 2
+            self._start_y = (sh - self.H) // 2
 
-        # ── canvas ────────────────────────────────────────────────────────────
+        # Canvas (full window, bg = chroma so corners vanish)
         self.cv = tk.Canvas(root, bg=CHROMA, highlightthickness=0,
                             width=self.W, height=self.H)
         self.cv.pack(fill=tk.BOTH, expand=True)
 
-        self._draw_pill()
-        self._build_labels()
-        self._build_close()
+        # Widgets
+        self.dl_lbl = tk.Label(self.cv, text="↓ 0 Mbps",
+                               font=self.FONT, bg=self.BG, fg=self.DL)
+        self.ul_lbl = tk.Label(self.cv, text="↑ 0 Mbps",
+                               font=self.FONT, bg=self.BG, fg=self.UL)
+        self.x_lbl  = tk.Label(self.cv, text="×", font=("Segoe UI", 11),
+                               bg=self.BG, fg=self.DIM, cursor="hand2")
+
+        self.x_lbl.bind("<Enter>",         lambda _: self.x_lbl.config(fg="#FF6B6B"))
+        self.x_lbl.bind("<Leave>",         lambda _: self.x_lbl.config(fg=self.DIM))
+        self.x_lbl.bind("<ButtonPress-1>", self._close_click)
+        self.x_lbl.bind("<Button-3>",      self._show_menu)
+
         self._build_menu()
 
-        # ── drag state ────────────────────────────────────────────────────────
-        # Anchor-offset method: on press store (mouse_abs - window_pos).
-        # On move: new_pos = mouse_abs - stored_offset.
-        # Works even if the B1-Motion event fires on multiple widgets because
-        # recomputing the same expression always yields the same result.
+        # Initial render pass to get real label sizes, then size the window
+        root.geometry(f"{self.W}x{self.H}+{self._start_x}+{self._start_y}")
+        self.dl_lbl.place(x=0, y=0)   # temporary placement to force measure
+        self.ul_lbl.place(x=0, y=0)
+        self.x_lbl.place(x=0, y=0)
+        root.update_idletasks()
+        self._autosize()               # sets real W, draws pill, places widgets
+
+        # Drag (anchor-offset: stores click-position-within-window at press,
+        # then on move: new_win_pos = abs_mouse - that_offset).
         self._dragging = False
         self._off_x = self._off_y = 0
-
-        # Bind to root → catches events propagated from every child widget.
-        # Also bind directly to canvas + labels as a belt-and-suspenders guard,
-        # because some Label clicks don't propagate on all Windows versions.
         self._attach_drag(root, self.cv, self.dl_lbl, self.ul_lbl)
 
-        # ── network thread ────────────────────────────────────────────────────
+        # Network thread
         io = psutil.net_io_counters()
         self._prev  = (io.bytes_recv, io.bytes_sent, time.time())
         self._dl_h  = deque(maxlen=8)
@@ -109,9 +124,42 @@ class NetworkSpeedMonitor:
         self._alive = True
         threading.Thread(target=self._monitor, daemon=True).start()
 
-    # ── drawing ───────────────────────────────────────────────────────────────
+    # ── layout ────────────────────────────────────────────────────────────────
 
-    def _draw_pill(self):
+    def _autosize(self):
+        """Resize the pill to snugly wrap the current label text."""
+        # winfo_reqwidth() reflects the rendered text width after update_idletasks()
+        dl_w = self.dl_lbl.winfo_reqwidth()
+        ul_w = self.ul_lbl.winfo_reqwidth()
+        cl_w = self.x_lbl.winfo_reqwidth()
+
+        # Positions
+        dl_x  = PAD
+        sep_x = PAD + dl_w + INNER          # separator line x
+        ul_x  = sep_x + 1 + INNER           # ul label x
+        cl_x  = ul_x + ul_w + INNER + cl_w  # close button right edge
+
+        new_w = max(MIN_W, cl_x + PAD - 2)
+
+        # Resize window & canvas only when width actually changes
+        if new_w != self.W:
+            self.W = new_w
+            wx = self.root.winfo_x()
+            wy = self.root.winfo_y()
+            self.root.geometry(f"{self.W}x{self.H}+{wx}+{wy}")
+            self.cv.config(width=self.W)
+
+        # Redraw pill (always, covers separator position change too)
+        self.cv.delete("all")
+        self._draw_pill(sep_x)
+
+        # Place widgets at computed positions
+        cy = self.H // 2
+        self.dl_lbl.place(x=dl_x,  y=cy, anchor="w")
+        self.ul_lbl.place(x=ul_x,  y=cy, anchor="w")
+        self.x_lbl.place( x=cl_x,  y=cy, anchor="e")
+
+    def _draw_pill(self, sep_x):
         w, h, r = self.W, self.H, self.H // 2
         pts = [
             r, 0,   w-r, 0,   w, 0,
@@ -121,29 +169,9 @@ class NetworkSpeedMonitor:
         ]
         self.cv.create_polygon(pts, smooth=True,
                                fill=self.BG, outline="#333333", width=1)
-        mid = self.W // 2
-        self.cv.create_line(mid, 7, mid, self.H - 7, fill=self.SEP, width=1)
+        self.cv.create_line(sep_x, 7, sep_x, self.H - 7, fill=self.SEP, width=1)
 
-    # ── widgets ───────────────────────────────────────────────────────────────
-
-    def _build_labels(self):
-        mid, cy = self.W // 2, self.H // 2
-        self.dl_lbl = tk.Label(self.cv, text="↓ 0 Mbps",
-                               font=self.FONT, bg=self.BG, fg=self.DL)
-        self.dl_lbl.place(x=8, y=cy, anchor="w")
-
-        self.ul_lbl = tk.Label(self.cv, text="↑ 0 Mbps",
-                               font=self.FONT, bg=self.BG, fg=self.UL)
-        self.ul_lbl.place(x=mid + 5, y=cy, anchor="w")
-
-    def _build_close(self):
-        self.x_lbl = tk.Label(self.cv, text="×", font=("Segoe UI", 11),
-                              bg=self.BG, fg=self.DIM, cursor="hand2")
-        self.x_lbl.place(x=self.W - 6, y=self.H // 2, anchor="e")
-        self.x_lbl.bind("<Enter>",         lambda _: self.x_lbl.config(fg="#FF6B6B"))
-        self.x_lbl.bind("<Leave>",         lambda _: self.x_lbl.config(fg=self.DIM))
-        self.x_lbl.bind("<ButtonPress-1>", self._close_click)
-        self.x_lbl.bind("<Button-3>",      self._show_menu)
+    # ── menu ──────────────────────────────────────────────────────────────────
 
     def _build_menu(self):
         m = tk.Menu(self.root, tearoff=0,
@@ -178,13 +206,12 @@ class NetworkSpeedMonitor:
     def _drag_move(self, e):
         if not self._dragging:
             return
-        # Anchor-offset: no accumulation, idempotent when called multiple times
         self.root.geometry(f"+{e.x_root - self._off_x}+{e.y_root - self._off_y}")
 
     def _close_click(self, e):
-        self._dragging = False           # cancel any live drag
-        self.root.after(1, self.quit)    # quit after event chain finishes
-        return "break"                   # stop propagation → no drag_start on root
+        self._dragging = False
+        self.root.after(1, self.quit)
+        return "break"
 
     # ── interactions ──────────────────────────────────────────────────────────
 
@@ -226,6 +253,8 @@ class NetworkSpeedMonitor:
     def _refresh(self, dl, ul):
         self.dl_lbl.config(text=format_speed(dl, "↓"), fg=self._tint(self.DL, dl))
         self.ul_lbl.config(text=format_speed(ul, "↑"), fg=self._tint(self.UL, ul))
+        self.root.update_idletasks()   # let tkinter compute new label sizes
+        self._autosize()               # resize pill to fit new text
 
     @staticmethod
     def _tint(col, mbps):
