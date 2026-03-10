@@ -9,6 +9,14 @@
 
 > A minimal, always-on-top network speed monitor that sits quietly on your desktop as a sleek, borderless pill-shaped overlay — showing real-time download and upload speeds at a glance.
 
+<p align="center">
+  <a href="https://github.com/bnp-aswin/speedify2/releases/latest/download/Speedify-Setup.exe">
+    <img src="https://img.shields.io/badge/⬇️ Download-Speedify--Setup.exe-2ea44f?style=for-the-badge&logo=windows&logoColor=white" alt="Download Speedify Setup" />
+  </a>
+</p>
+
+> [!NOTE] Click the button above to download the latest Windows installer directly. No Python installation required.
+
 ---
 
 ## ✨ Features
