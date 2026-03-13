@@ -7,6 +7,13 @@
   <img src="https://img.shields.io/badge/License-MIT-yellow?style=flat-square" />
 </p>
 
+<p align="center">
+  <img src="https://img.shields.io/github/stars/bnp-aswin/speedify2" alt="GitHub stars" />
+  <img src="https://img.shields.io/github/forks/bnp-aswin/speedify2" alt="GitHub forks" />
+  <img src="https://img.shields.io/github/issues/bnp-aswin/speedify2" alt="GitHub issues" />
+  <img src="https://img.shields.io/github/license/bnp-aswin/speedify2" alt="License" />
+</p>
+
 > A minimal, always-on-top network speed monitor that sits quietly on your desktop as a sleek, borderless pill-shaped overlay — showing real-time download and upload speeds at a glance.
 
 <p align="center">
@@ -33,6 +40,13 @@
 ---
 
 ## 📸 Preview
+
+<p align="center">
+  <img src="docs/preview.gif" alt="Speedify UI — real-time speed monitor pill widget" width="400" />
+</p>
+
+> Demo shows real-time speed updates, drag-to-reposition, and transparency effect.
+> *(Replace `docs/preview.gif` with an actual screen recording to display the demo.)*
 
 | Element        | Detail                                      |
 | -------------- | ------------------------------------------- |
@@ -115,6 +129,13 @@ speedify2/
 ├── installer.spec     # Installer PyInstaller spec
 ├── network_icon.ico   # App icon
 ├── requirements.txt   # Python dependencies
+├── CONTRIBUTING.md    # Contributor guide
+├── docs/
+│   └── preview.gif    # Demo screen recording (placeholder)
+├── .github/
+│   └── ISSUE_TEMPLATE/
+│       ├── bug_report.md
+│       └── feature_request.md
 └── README.md
 ```
 
