@@ -2,11 +2,121 @@
 <html lang="en">
 
 <head>
+  <!-- 1. Character encoding — must be first -->
   <meta charset="UTF-8" />
+  <!-- 2. Viewport — required for Google mobile-first indexing -->
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Speedify — Network Speed Monitor</title>
-  <meta name="description"
-    content="A minimal, always-on-top network speed monitor for Windows. Pill-shaped overlay showing real-time download and upload speeds." />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+
+  <!-- 3. Performance: early resource hints -->
+  <link rel="preconnect" href="https://github.com" crossorigin />
+  <link rel="dns-prefetch" href="//github.com" />
+  <link rel="dns-prefetch" href="//objects.githubusercontent.com" />
+
+  <!-- 4. Canonical URL — prevents duplicate content issues -->
+  <link rel="canonical" href="https://aswin-blix.github.io/speedify2/" />
+
+  <!-- 5. Hreflang — single-language self-reference -->
+  <link rel="alternate" hreflang="en" href="https://aswin-blix.github.io/speedify2/" />
+  <link rel="alternate" hreflang="x-default" href="https://aswin-blix.github.io/speedify2/" />
+
+  <!-- 6. Primary SEO meta tags -->
+  <title>Speedify — Free Windows Network Speed Monitor Widget</title>
+  <meta name="description" content="Monitor network speeds live on Windows with a free always-on-top widget. Shows upload &amp; download in KB/s, Mbps, or Gbps. Lightweight, open source — download free, no Python required." />
+  <meta name="keywords" content="network speed monitor windows, windows speed widget, bandwidth monitor, internet speed overlay, upload download speed monitor, free network monitor, always on top widget, desktop network widget, real-time bandwidth monitor, windows 11 network monitor, free bandwidth meter, internet speed widget desktop" />
+  <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
+  <meta name="author" content="Aswin" />
+
+  <!-- 7. Open Graph — controls how the page appears when shared on social media -->
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://aswin-blix.github.io/speedify2/" />
+  <meta property="og:title" content="Speedify — Free Windows Network Speed Monitor Widget" />
+  <meta property="og:description" content="Always-on-top desktop widget for Windows. Live upload &amp; download speeds with adaptive KB/s, Mbps, Gbps units. Free, open source, and under 20 MB." />
+  <meta property="og:image" content="https://aswin-blix.github.io/speedify2/og-image.png" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:image:alt" content="Speedify network speed monitor widget showing download and upload speeds on a Windows desktop" />
+  <meta property="og:site_name" content="Speedify" />
+  <meta property="og:locale" content="en_US" />
+
+  <!-- 8. Twitter / X Card -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Speedify — Free Windows Network Speed Monitor Widget" />
+  <meta name="twitter:description" content="Always-on-top widget for Windows. Live upload &amp; download speeds in KB/s, Mbps, or Gbps. Free and open source." />
+  <meta name="twitter:image" content="https://aswin-blix.github.io/speedify2/og-image.png" />
+  <meta name="twitter:image:alt" content="Speedify network speed monitor widget on a Windows desktop" />
+
+  <!-- 9. Browser / UI signals -->
+  <meta name="theme-color" content="#0d0d0d" />
+  <meta name="format-detection" content="telephone=no" />
+
+  <!-- 10. Favicon (copy network_icon.ico into the docs/ folder) -->
+  <link rel="icon" type="image/x-icon" href="network_icon.ico" />
+
+  <!-- 11. Sitemap reference -->
+  <link rel="sitemap" type="application/xml" href="sitemap.xml" />
+
+  <!-- 12. JSON-LD: SoftwareApplication — enables rich results in Google -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "Speedify",
+    "alternateName": "Speedify Network Monitor",
+    "description": "A free, always-on-top network speed monitor widget for Windows. Displays live upload and download speeds in real time with adaptive KB/s, Mbps, and Gbps units. Lightweight, borderless pill-shaped overlay with drag-to-reposition and persistent window position.",
+    "url": "https://aswin-blix.github.io/speedify2/",
+    "downloadUrl": "https://github.com/aswin-blix/speedify2/releases/latest/download/Speedify-Setup.exe",
+    "installUrl": "https://github.com/aswin-blix/speedify2/releases/latest/download/Speedify-Setup.exe",
+    "softwareVersion": "1.0.0",
+    "datePublished": "2026-03-15",
+    "dateModified": "2026-03-15",
+    "fileSize": "18MB",
+    "operatingSystem": "Windows 10, Windows 11",
+    "applicationCategory": "UtilitiesApplication",
+    "applicationSubCategory": "Network Monitor",
+    "inLanguage": "en",
+    "isAccessibleForFree": true,
+    "license": "https://github.com/aswin-blix/speedify2/blob/main/LICENSE",
+    "author": {
+      "@type": "Person",
+      "name": "Aswin",
+      "url": "https://github.com/aswin-blix"
+    },
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "USD",
+      "availability": "https://schema.org/InStock"
+    },
+    "featureList": [
+      "Real-time network speed monitoring",
+      "Always-on-top overlay window",
+      "Adaptive units: KB/s, Mbps, Gbps",
+      "Borderless pill-shaped transparent widget",
+      "Drag-to-reposition anywhere on screen",
+      "Persistent window position across sessions",
+      "Dynamic color tinting at high bandwidth",
+      "Right-click context menu",
+      "Windows installer with Start Menu shortcut",
+      "Lightweight — minimal CPU and memory usage",
+      "8-sample sliding average for smooth readings"
+    ],
+    "softwareRequirements": "Windows 10 or Windows 11"
+  }
+  </script>
+
+  <!-- 13. JSON-LD: WebSite -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "name": "Speedify",
+    "url": "https://aswin-blix.github.io/speedify2/",
+    "description": "Free Windows network speed monitor widget — real-time upload and download bandwidth overlay",
+    "inLanguage": "en-US"
+  }
+  </script>
+
   <style>
     *,
     *::before,
@@ -781,51 +891,58 @@
 <body>
 
   <!-- ── NAV ──────────────────────────────────────────────────────────── -->
-  <nav>
-    <a href="#" class="nav-brand">
-      <div class="nav-icon">⚡</div>
-      Speedify
-    </a>
-    <ul class="nav-links">
-      <li><a href="#features">Features</a></li>
-      <li><a href="#usage">Usage</a></li>
-      <li><a href="#install">Install</a></li>
-      <li><a href="#tech">Tech</a></li>
-      <li><a href="https://github.com/bnp-aswin/speedify2" target="_blank" rel="noopener">GitHub</a></li>
-    </ul>
-    <button class="hamburger" id="hamburger" aria-label="Open menu">
-      <span></span>
-      <span></span>
-      <span></span>
-    </button>
-  </nav>
-  <div class="mobile-nav" id="mobile-nav">
+  <header role="banner">
+    <nav aria-label="Primary navigation">
+      <a href="#" class="nav-brand" aria-label="Speedify — Windows network speed monitor">
+        <div class="nav-icon" aria-hidden="true">⚡</div>
+        Speedify
+      </a>
+      <ul class="nav-links" role="list">
+        <li><a href="#features">Features</a></li>
+        <li><a href="#usage">Usage</a></li>
+        <li><a href="#install">Install</a></li>
+        <li><a href="#tech">Tech</a></li>
+        <li><a href="https://github.com/aswin-blix/speedify2" target="_blank" rel="noopener">GitHub</a></li>
+      </ul>
+      <button class="hamburger" id="hamburger" aria-label="Open navigation menu" aria-expanded="false" aria-controls="mobile-nav">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </nav>
+  </header>
+  <div class="mobile-nav" id="mobile-nav" role="navigation" aria-label="Mobile navigation">
     <a href="#features">Features</a>
     <a href="#usage">Usage</a>
     <a href="#install">Install</a>
     <a href="#tech">Tech</a>
-    <a href="https://github.com/bnp-aswin/speedify2" target="_blank" rel="noopener">GitHub ↗</a>
+    <a href="https://github.com/aswin-blix/speedify2" target="_blank" rel="noopener">GitHub ↗</a>
   </div>
 
   <!-- ── HERO ─────────────────────────────────────────────────────────── -->
+  <main id="main-content">
+  <section aria-labelledby="hero-heading">
   <div class="hero">
-    <div class="hero-badge">⚡ Windows Desktop Widget</div>
-    <h1>
-      See your network<br />
-      speed, <span class="teal">instantly</span>
+    <div class="hero-badge">⚡ Free Windows Desktop Widget</div>
+    <h1 id="hero-heading">
+      Free Windows network<br />
+      speed monitor, <span class="teal">done right</span>
     </h1>
     <p class="hero-sub">
-      A minimal, always-on-top desktop overlay that sits quietly on your screen
-      — showing real-time <span style="color:var(--teal)">download</span> and
-      <span style="color:var(--coral)">upload</span> speeds at a glance.
-      No clutter. No config. Just your speeds.
+      A lightweight, always-on-top <strong>network speed monitor for Windows 10 and 11</strong>
+      — sitting quietly on your desktop as a sleek, borderless overlay that shows
+      real-time <span style="color:var(--teal)">download</span> and
+      <span style="color:var(--coral)">upload</span> bandwidth at a glance.
+      Free, open source. No clutter. No config.
     </p>
     <div class="btn-group">
-      <a href="https://github.com/bnp-aswin/speedify2/releases/latest/download/Speedify-Setup.exe"
-        class="btn btn-primary">
-        ⬇ Download for Windows
+      <a href="https://github.com/aswin-blix/speedify2/releases/latest/download/Speedify-Setup.exe"
+        class="btn btn-primary"
+        aria-label="Download Speedify for Windows — free installer, 18 MB">
+        ⬇ Download for Windows — Free
       </a>
-      <a href="https://github.com/bnp-aswin/speedify2" target="_blank" rel="noopener" class="btn btn-outline">
+      <a href="https://github.com/aswin-blix/speedify2" target="_blank" rel="noopener"
+        class="btn btn-outline" aria-label="View Speedify source code on GitHub">
         View on GitHub
       </a>
     </div>
@@ -870,15 +987,15 @@
       </div>
     </div>
   </div>
+  </section>
 
   <div class="divider"></div>
 
   <!-- ── FEATURES ──────────────────────────────────────────────────────── -->
-  <section id="features">
+  <section id="features" aria-labelledby="features-heading">
     <span class="section-tag">Features</span>
-    <h2>Everything you need, nothing you don't</h2>
-    <p class="section-sub">Speedify is purpose-built to be invisible until you need it — then perfectly readable at a
-      glance.</p>
+    <h2 id="features-heading">Everything you need, nothing you don't</h2>
+    <p class="section-sub">Speedify is a Windows network bandwidth monitor purpose-built to be invisible until you need it — then perfectly readable at a glance.</p>
 
     <div class="features-grid">
       <div class="feature-card">
@@ -941,9 +1058,9 @@
   <div class="divider"></div>
 
   <!-- ── USAGE ─────────────────────────────────────────────────────────── -->
-  <section id="usage">
+  <section id="usage" aria-labelledby="usage-heading">
     <span class="section-tag">Usage</span>
-    <h2>Simple by design</h2>
+    <h2 id="usage-heading">Simple to use on any Windows setup</h2>
     <p class="section-sub">No settings window, no system tray icon. Everything you need is a drag or right-click away.
     </p>
 
@@ -983,10 +1100,10 @@
   <div class="divider"></div>
 
   <!-- ── INSTALL ────────────────────────────────────────────────────────── -->
-  <section id="install">
+  <section id="install" aria-labelledby="install-heading">
     <span class="section-tag">Installation</span>
-    <h2>Up and running in seconds</h2>
-    <p class="section-sub">Use the pre-built installer (recommended) or run from source if you prefer.</p>
+    <h2 id="install-heading">Download Speedify for Windows — free</h2>
+    <p class="section-sub">Download the free Windows installer (no Python needed) or run from source if you prefer.</p>
 
     <div class="install-grid">
       <div class="install-card featured">
@@ -997,7 +1114,7 @@
           optional Desktop shortcut, and registers with Programs &amp; Features
           for easy uninstall.
         </div>
-        <a href="https://github.com/bnp-aswin/speedify2/releases/latest/download/Speedify-Setup.exe"
+        <a href="https://github.com/aswin-blix/speedify2/releases/latest/download/Speedify-Setup.exe"
           class="btn btn-primary" style="margin-top:4px;">
           ⬇ Download Speedify-Setup.exe
         </a>
@@ -1010,7 +1127,7 @@
           Requires Python 3.6+ and pip. Tkinter is included in Python's standard library.
         </div>
         <pre><code><span class="cm"># Clone</span>
-git clone https://github.com/bnp-aswin/speedify2
+git clone https://github.com/aswin-blix/speedify2
 cd speedify2
 
 <span class="cm"># Install dependency</span>
@@ -1043,9 +1160,9 @@ pyinstaller installer.spec --noconfirm --clean</code></pre>
   <div class="divider"></div>
 
   <!-- ── TECH ───────────────────────────────────────────────────────────── -->
-  <section id="tech">
+  <section id="tech" aria-labelledby="tech-heading">
     <span class="section-tag">Technical Details</span>
-    <h2>Under the hood</h2>
+    <h2 id="tech-heading">Under the hood</h2>
     <p class="section-sub">Minimal dependencies, standard-library GUI, and a smart overlay trick to get a true
       borderless pill on Windows.</p>
 
@@ -1144,18 +1261,20 @@ pyinstaller installer.spec --noconfirm --clean</code></pre>
 
   <div class="divider"></div>
 
+  </main>
+
   <!-- ── FOOTER ─────────────────────────────────────────────────────────── -->
-  <footer>
+  <footer role="contentinfo">
     <div style="margin-bottom:6px;">
-      Built with Python &amp; Tkinter &nbsp;·&nbsp; MIT License
+      Speedify — free Windows network speed monitor &nbsp;·&nbsp; MIT License
     </div>
-    <div class="footer-links">
-      <a href="https://github.com/bnp-aswin/speedify2" target="_blank" rel="noopener">GitHub Repository</a>
-      <a href="https://github.com/bnp-aswin/speedify2/releases" target="_blank" rel="noopener">Releases</a>
-      <a href="https://github.com/bnp-aswin/speedify2/issues" target="_blank" rel="noopener">Report an Issue</a>
-      <a href="https://github.com/bnp-aswin/speedify2/blob/main/CONTRIBUTING.md" target="_blank"
+    <nav aria-label="Footer navigation" class="footer-links">
+      <a href="https://github.com/aswin-blix/speedify2" target="_blank" rel="noopener">GitHub Repository</a>
+      <a href="https://github.com/aswin-blix/speedify2/releases" target="_blank" rel="noopener">Releases</a>
+      <a href="https://github.com/aswin-blix/speedify2/issues" target="_blank" rel="noopener">Report an Issue</a>
+      <a href="https://github.com/aswin-blix/speedify2/blob/main/CONTRIBUTING.md" target="_blank"
         rel="noopener">Contributing</a>
-    </div>
+    </nav>
   </footer>
 
   <!-- ── PILL ANIMATION ─────────────────────────────────────────────────── -->
@@ -1188,8 +1307,9 @@ pyinstaller installer.spec --noconfirm --clean</code></pre>
     const mobileNav = document.getElementById('mobile-nav');
 
     hamburger.addEventListener('click', () => {
-      hamburger.classList.toggle('open');
+      const isOpen = hamburger.classList.toggle('open');
       mobileNav.classList.toggle('open');
+      hamburger.setAttribute('aria-expanded', String(isOpen));
     });
 
     mobileNav.querySelectorAll('a').forEach(link => {

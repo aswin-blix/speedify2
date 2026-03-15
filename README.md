@@ -8,22 +8,22 @@
 </p>
 
 <p align="center">
-  <img src="https://img.shields.io/github/stars/bnp-aswin/speedify2" alt="GitHub stars" />
-  <img src="https://img.shields.io/github/forks/bnp-aswin/speedify2" alt="GitHub forks" />
-  <img src="https://img.shields.io/github/issues/bnp-aswin/speedify2" alt="GitHub issues" />
-  <img src="https://img.shields.io/github/license/bnp-aswin/speedify2" alt="License" />
+  <img src="https://img.shields.io/github/stars/aswin-blix/speedify2" alt="GitHub stars" />
+  <img src="https://img.shields.io/github/forks/aswin-blix/speedify2" alt="GitHub forks" />
+  <img src="https://img.shields.io/github/issues/aswin-blix/speedify2" alt="GitHub issues" />
+  <img src="https://img.shields.io/github/license/aswin-blix/speedify2" alt="License" />
 </p>
 
 > A minimal, always-on-top network speed monitor that sits quietly on your desktop as a sleek, borderless pill-shaped overlay — showing real-time download and upload speeds at a glance.
 
 <p align="center">
-  <a href="https://bnp-aswin.github.io/speedify2/">🌐 Landing Page</a> &nbsp;·&nbsp;
-  <a href="https://github.com/bnp-aswin/speedify2/releases">Releases</a> &nbsp;·&nbsp;
-  <a href="https://github.com/bnp-aswin/speedify2/issues">Report Issue</a>
+  <a href="https://aswin-blix.github.io/speedify2/">🌐 Landing Page</a> &nbsp;·&nbsp;
+  <a href="https://github.com/aswin-blix/speedify2/releases">Releases</a> &nbsp;·&nbsp;
+  <a href="https://github.com/aswin-blix/speedify2/issues">Report Issue</a>
 </p>
 
 <p align="center">
-  <a href="https://github.com/bnp-aswin/speedify2/releases/latest/download/Speedify-Setup.exe">
+  <a href="https://github.com/aswin-blix/speedify2/releases/latest/download/Speedify-Setup.exe">
     <img src="https://img.shields.io/badge/⬇️ Download-Speedify--Setup.exe-2ea44f?style=for-the-badge&logo=windows&logoColor=white" alt="Download Speedify Setup" />
   </a>
 </p>
@@ -75,7 +75,7 @@
 
 ```bash
 # Clone the repository
-git clone https://github.com/bnp-aswin/speedify2
+git clone https://github.com/aswin-blix/speedify2
 cd speedify
 
 # Install dependencies
