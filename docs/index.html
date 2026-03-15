@@ -1,0 +1,987 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Speedify — Network Speed Monitor</title>
+  <meta name="description"
+    content="A minimal, always-on-top network speed monitor for Windows. Pill-shaped overlay showing real-time download and upload speeds." />
+  <style>
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    :root {
+      --bg: #0d0d0d;
+      --surface: #1e1e1e;
+      --card: #252525;
+      --border: #2e2e2e;
+      --sep: #383838;
+      --teal: #00D4AA;
+      --coral: #FF6B6B;
+      --text: #e2e2e2;
+      --muted: #888888;
+      --dim: #555555;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: "Segoe UI", system-ui, -apple-system, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    /* ── NAV ─────────────────────────────────────────────────────────── */
+    nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 14px 40px;
+      background: rgba(13, 13, 13, .88);
+      backdrop-filter: blur(14px);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .nav-brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 1.1rem;
+      font-weight: 700;
+      letter-spacing: .5px;
+      color: var(--text);
+      text-decoration: none;
+    }
+
+    .nav-icon {
+      width: 28px;
+      height: 28px;
+      background: linear-gradient(135deg, var(--teal), #00a882);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 28px;
+      list-style: none;
+    }
+
+    .nav-links a {
+      color: var(--muted);
+      text-decoration: none;
+      font-size: .9rem;
+      transition: color .2s;
+    }
+
+    .nav-links a:hover {
+      color: var(--teal);
+    }
+
+    /* ── HERO ────────────────────────────────────────────────────────── */
+    .hero {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      padding: 100px 24px 80px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero::before {
+      content: "";
+      position: absolute;
+      top: -120px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 700px;
+      height: 700px;
+      background: radial-gradient(circle, rgba(0, 212, 170, .12) 0%, transparent 65%);
+      pointer-events: none;
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(0, 212, 170, .1);
+      border: 1px solid rgba(0, 212, 170, .25);
+      color: var(--teal);
+      font-size: .78rem;
+      font-weight: 600;
+      letter-spacing: .8px;
+      text-transform: uppercase;
+      padding: 5px 14px;
+      border-radius: 99px;
+      margin-bottom: 28px;
+    }
+
+    h1 {
+      font-size: clamp(2.6rem, 7vw, 4.4rem);
+      font-weight: 800;
+      letter-spacing: -1px;
+      line-height: 1.1;
+      margin-bottom: 20px;
+    }
+
+    h1 span.teal {
+      color: var(--teal);
+    }
+
+    h1 span.coral {
+      color: var(--coral);
+    }
+
+    .hero-sub {
+      max-width: 560px;
+      color: var(--muted);
+      font-size: 1.1rem;
+      margin-bottom: 42px;
+    }
+
+    .btn-group {
+      display: flex;
+      gap: 14px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 13px 28px;
+      border-radius: 10px;
+      font-size: .95rem;
+      font-weight: 600;
+      text-decoration: none;
+      transition: transform .15s, box-shadow .15s, opacity .15s;
+      cursor: pointer;
+      border: none;
+    }
+
+    .btn:hover {
+      transform: translateY(-2px);
+      opacity: .92;
+    }
+
+    .btn-primary {
+      background: var(--teal);
+      color: #000;
+      box-shadow: 0 4px 24px rgba(0, 212, 170, .35);
+    }
+
+    .btn-outline {
+      background: transparent;
+      color: var(--text);
+      border: 1px solid var(--border);
+    }
+
+    .btn-outline:hover {
+      border-color: var(--teal);
+      color: var(--teal);
+    }
+
+    /* ── PILL DEMO ───────────────────────────────────────────────────── */
+    .pill-demo-wrap {
+      margin-top: 72px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .pill-demo-label {
+      font-size: .78rem;
+      color: var(--dim);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 0;
+      background: var(--surface);
+      border-radius: 8px;
+      border: 1px solid #333;
+      padding: 0 18px;
+      height: 36px;
+      font-family: "Segoe UI", system-ui, sans-serif;
+      font-size: 13px;
+      font-weight: 700;
+      user-select: none;
+      box-shadow: 0 4px 32px rgba(0, 0, 0, .5);
+    }
+
+    .pill-dl {
+      color: var(--teal);
+    }
+
+    .pill-sep {
+      width: 1px;
+      height: 18px;
+      background: var(--sep);
+      margin: 0 12px;
+    }
+
+    .pill-ul {
+      color: var(--coral);
+    }
+
+    .pill-close {
+      color: var(--dim);
+      margin-left: 10px;
+      font-size: 15px;
+      cursor: pointer;
+      transition: color .2s;
+    }
+
+    .pill-close:hover {
+      color: var(--coral);
+    }
+
+    .pill-screens {
+      display: flex;
+      gap: 24px;
+      margin-top: 16px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .pill-screen {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .pill-screen-label {
+      font-size: .72rem;
+      color: var(--dim);
+      letter-spacing: .5px;
+    }
+
+    /* ── SECTION ─────────────────────────────────────────────────────── */
+    section {
+      max-width: 1060px;
+      margin: 0 auto;
+      padding: 80px 24px;
+    }
+
+    .section-tag {
+      display: inline-block;
+      font-size: .72rem;
+      font-weight: 700;
+      letter-spacing: 1.2px;
+      text-transform: uppercase;
+      color: var(--teal);
+      margin-bottom: 10px;
+    }
+
+    h2 {
+      font-size: clamp(1.6rem, 4vw, 2.2rem);
+      font-weight: 700;
+      margin-bottom: 10px;
+    }
+
+    .section-sub {
+      color: var(--muted);
+      font-size: 1rem;
+      margin-bottom: 52px;
+      max-width: 520px;
+    }
+
+    /* ── FEATURES ────────────────────────────────────────────────────── */
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+      gap: 20px;
+    }
+
+    .feature-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 28px 24px;
+      transition: border-color .2s, transform .2s;
+    }
+
+    .feature-card:hover {
+      border-color: rgba(0, 212, 170, .4);
+      transform: translateY(-3px);
+    }
+
+    .feature-icon {
+      font-size: 1.7rem;
+      margin-bottom: 14px;
+    }
+
+    .feature-title {
+      font-size: .95rem;
+      font-weight: 700;
+      margin-bottom: 6px;
+    }
+
+    .feature-desc {
+      font-size: .85rem;
+      color: var(--muted);
+      line-height: 1.55;
+    }
+
+    /* ── USAGE ───────────────────────────────────────────────────────── */
+    .usage-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 16px;
+    }
+
+    .usage-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 22px 20px;
+      display: flex;
+      gap: 14px;
+      align-items: flex-start;
+    }
+
+    .usage-action {
+      width: 38px;
+      height: 38px;
+      background: rgba(0, 212, 170, .1);
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.1rem;
+      flex-shrink: 0;
+    }
+
+    .usage-title {
+      font-size: .88rem;
+      font-weight: 700;
+      margin-bottom: 4px;
+    }
+
+    .usage-desc {
+      font-size: .8rem;
+      color: var(--muted);
+      line-height: 1.45;
+    }
+
+    /* ── INSTALL ─────────────────────────────────────────────────────── */
+    .install-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+    }
+
+    @media (max-width: 620px) {
+      .install-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .install-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 32px 28px;
+    }
+
+    .install-card.featured {
+      border-color: rgba(0, 212, 170, .4);
+      background: linear-gradient(135deg, rgba(0, 212, 170, .05), var(--card));
+    }
+
+    .install-tag {
+      display: inline-block;
+      font-size: .7rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: .8px;
+      background: var(--teal);
+      color: #000;
+      border-radius: 4px;
+      padding: 2px 8px;
+      margin-bottom: 14px;
+    }
+
+    .install-title {
+      font-size: 1.1rem;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+
+    .install-desc {
+      font-size: .86rem;
+      color: var(--muted);
+      margin-bottom: 20px;
+      line-height: 1.5;
+    }
+
+    pre {
+      background: #161616;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 16px 18px;
+      font-size: .82rem;
+      overflow-x: auto;
+      line-height: 1.6;
+      color: #ccc;
+      margin-bottom: 18px;
+    }
+
+    code .kw {
+      color: var(--teal);
+    }
+
+    code .cm {
+      color: var(--dim);
+      font-style: italic;
+    }
+
+    /* ── TECH TABLE ──────────────────────────────────────────────────── */
+    .tech-wrap {
+      overflow-x: auto;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: .88rem;
+    }
+
+    th {
+      text-align: left;
+      padding: 12px 18px;
+      background: var(--card);
+      color: var(--muted);
+      font-size: .78rem;
+      text-transform: uppercase;
+      letter-spacing: .8px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    td {
+      padding: 13px 18px;
+      border-bottom: 1px solid rgba(255, 255, 255, .05);
+    }
+
+    tr:last-child td {
+      border-bottom: none;
+    }
+
+    td:first-child {
+      color: var(--teal);
+      font-weight: 600;
+    }
+
+    /* ── DIVIDER ─────────────────────────────────────────────────────── */
+    .divider {
+      height: 1px;
+      background: linear-gradient(to right, transparent, var(--border), transparent);
+      margin: 0 24px;
+    }
+
+    /* ── FOOTER ──────────────────────────────────────────────────────── */
+    footer {
+      text-align: center;
+      padding: 48px 24px;
+      color: var(--dim);
+      font-size: .84rem;
+    }
+
+    footer a {
+      color: var(--muted);
+      text-decoration: none;
+    }
+
+    footer a:hover {
+      color: var(--teal);
+    }
+
+    .footer-links {
+      display: flex;
+      gap: 24px;
+      justify-content: center;
+      margin-top: 10px;
+      flex-wrap: wrap;
+    }
+
+    /* ── COLOR SWATCHES ──────────────────────────────────────────────── */
+    .swatch-row {
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+      margin-top: 16px;
+    }
+
+    .swatch {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: .83rem;
+    }
+
+    .swatch-dot {
+      width: 20px;
+      height: 20px;
+      border-radius: 5px;
+    }
+
+    .swatch-name {
+      font-weight: 600;
+    }
+
+    .swatch-hex {
+      color: var(--muted);
+      font-family: monospace;
+      font-size: .78rem;
+    }
+
+    /* ── SCROLLBAR ───────────────────────────────────────────────────── */
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: var(--bg);
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: var(--sep);
+      border-radius: 3px;
+    }
+
+    /* ── RESPONSIVE ──────────────────────────────────────────────────── */
+    @media (max-width: 640px) {
+      nav {
+        padding: 12px 20px;
+      }
+
+      .nav-links {
+        display: none;
+      }
+
+      .hero {
+        padding: 72px 20px 60px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- ── NAV ──────────────────────────────────────────────────────────── -->
+  <nav>
+    <a href="#" class="nav-brand">
+      <div class="nav-icon">⚡</div>
+      Speedify
+    </a>
+    <ul class="nav-links">
+      <li><a href="#features">Features</a></li>
+      <li><a href="#usage">Usage</a></li>
+      <li><a href="#install">Install</a></li>
+      <li><a href="#tech">Tech</a></li>
+      <li><a href="https://github.com/bnp-aswin/speedify2" target="_blank" rel="noopener">GitHub</a></li>
+    </ul>
+  </nav>
+
+  <!-- ── HERO ─────────────────────────────────────────────────────────── -->
+  <div class="hero">
+    <div class="hero-badge">⚡ Windows Desktop Widget</div>
+    <h1>
+      See your network<br />
+      speed, <span class="teal">instantly</span>
+    </h1>
+    <p class="hero-sub">
+      A minimal, always-on-top desktop overlay that sits quietly on your screen
+      — showing real-time <span style="color:var(--teal)">download</span> and
+      <span style="color:var(--coral)">upload</span> speeds at a glance.
+      No clutter. No config. Just your speeds.
+    </p>
+    <div class="btn-group">
+      <a href="https://github.com/bnp-aswin/speedify2/releases/latest/download/Speedify-Setup.exe"
+        class="btn btn-primary">
+        ⬇ Download for Windows
+      </a>
+      <a href="https://github.com/bnp-aswin/speedify2" target="_blank" rel="noopener" class="btn btn-outline">
+        View on GitHub
+      </a>
+    </div>
+
+    <!-- Animated pill mockup -->
+    <div class="pill-demo-wrap">
+      <span class="pill-demo-label">Live preview</span>
+      <div class="pill">
+        <span class="pill-dl" id="dl-val">↓ 0 Mbps</span>
+        <div class="pill-sep"></div>
+        <span class="pill-ul" id="ul-val">↑ 0 Mbps</span>
+        <span class="pill-close">×</span>
+      </div>
+      <div class="pill-screens">
+        <div class="pill-screen">
+          <div class="pill" style="font-size:11px;height:30px;padding:0 14px;">
+            <span class="pill-dl">↓ 0 KB/s</span>
+            <div class="pill-sep"></div>
+            <span class="pill-ul">↑ 0 KB/s</span>
+            <span class="pill-close" style="font-size:13px;">×</span>
+          </div>
+          <span class="pill-screen-label">Idle</span>
+        </div>
+        <div class="pill-screen">
+          <div class="pill" style="font-size:11px;height:30px;padding:0 14px;">
+            <span class="pill-dl">↓ 24.6 Mbps</span>
+            <div class="pill-sep"></div>
+            <span class="pill-ul">↑ 1.2 Mbps</span>
+            <span class="pill-close" style="font-size:13px;">×</span>
+          </div>
+          <span class="pill-screen-label">Downloading</span>
+        </div>
+        <div class="pill-screen">
+          <div class="pill" style="font-size:11px;height:30px;padding:0 14px;">
+            <span class="pill-dl">↓ 1.4 Gbps</span>
+            <div class="pill-sep"></div>
+            <span class="pill-ul">↑ 340 Mbps</span>
+            <span class="pill-close" style="font-size:13px;">×</span>
+          </div>
+          <span class="pill-screen-label">Maxed out</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- ── FEATURES ──────────────────────────────────────────────────────── -->
+  <section id="features">
+    <span class="section-tag">Features</span>
+    <h2>Everything you need, nothing you don't</h2>
+    <p class="section-sub">Speedify is purpose-built to be invisible until you need it — then perfectly readable at a
+      glance.</p>
+
+    <div class="features-grid">
+      <div class="feature-card">
+        <div class="feature-icon">📊</div>
+        <div class="feature-title">Real-time monitoring</div>
+        <div class="feature-desc">Live download and upload speeds polled every second, with an 8-sample sliding average
+          to smooth out spikes.</div>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🧮</div>
+        <div class="feature-title">Adaptive units</div>
+        <div class="feature-desc">Automatically switches between KB/s, Mbps, and Gbps so the display always shows the
+          most readable value.</div>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">💊</div>
+        <div class="feature-title">Pill-shaped overlay</div>
+        <div class="feature-desc">Borderless, transparent window with a smooth pill shape using Windows chroma-key
+          transparency — no ugly frame.</div>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">📌</div>
+        <div class="feature-title">Always on top</div>
+        <div class="feature-desc">Floats above all open windows so you always know your speed. Toggle it off any time
+          from the right-click menu.</div>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🖱️</div>
+        <div class="feature-title">Fully draggable</div>
+        <div class="feature-desc">Click and drag the pill to any corner of your screen. Works across multi-monitor
+          setups.</div>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">💾</div>
+        <div class="feature-title">Persistent position</div>
+        <div class="feature-desc">Your preferred screen position is saved to <code>%APPDATA%\Speedify\config.json</code>
+          and restored on next launch.</div>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🎨</div>
+        <div class="feature-title">Dynamic color tinting</div>
+        <div class="feature-desc">The teal download and coral upload colors brighten as bandwidth increases — instant
+          visual feedback without numbers.</div>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">⚡</div>
+        <div class="feature-title">Featherweight</div>
+        <div class="feature-desc">Pure Python + Tkinter. Runs as a daemon thread; negligible CPU and memory footprint
+          even on low-end hardware.</div>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🖱️ ✦</div>
+        <div class="feature-title">Right-click context menu</div>
+        <div class="feature-desc">Toggle Always on Top, reset position to center, or close — all from a clean dark
+          context menu.</div>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- ── USAGE ─────────────────────────────────────────────────────────── -->
+  <section id="usage">
+    <span class="section-tag">Usage</span>
+    <h2>Simple by design</h2>
+    <p class="section-sub">No settings window, no system tray icon. Everything you need is a drag or right-click away.
+    </p>
+
+    <div class="usage-grid">
+      <div class="usage-card">
+        <div class="usage-action">↔️</div>
+        <div>
+          <div class="usage-title">Move the widget</div>
+          <div class="usage-desc">Click and drag anywhere on the pill to reposition it on screen.</div>
+        </div>
+      </div>
+      <div class="usage-card">
+        <div class="usage-action">✕</div>
+        <div>
+          <div class="usage-title">Close</div>
+          <div class="usage-desc">Click the <strong>×</strong> button on the right side of the pill.</div>
+        </div>
+      </div>
+      <div class="usage-card">
+        <div class="usage-action">📌</div>
+        <div>
+          <div class="usage-title">Toggle Always on Top</div>
+          <div class="usage-desc">Right-click → <em>Always on Top</em> to enable or disable floating over windows.</div>
+        </div>
+      </div>
+      <div class="usage-card">
+        <div class="usage-action">🏠</div>
+        <div>
+          <div class="usage-title">Reset Position</div>
+          <div class="usage-desc">Right-click → <em>Reset Position</em> to snap the pill back to the screen center.
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- ── INSTALL ────────────────────────────────────────────────────────── -->
+  <section id="install">
+    <span class="section-tag">Installation</span>
+    <h2>Up and running in seconds</h2>
+    <p class="section-sub">Use the pre-built installer (recommended) or run from source if you prefer.</p>
+
+    <div class="install-grid">
+      <div class="install-card featured">
+        <div class="install-tag">Recommended</div>
+        <div class="install-title">Windows Installer (.exe)</div>
+        <div class="install-desc">
+          No Python required. Double-click and run. Creates Start Menu shortcut,
+          optional Desktop shortcut, and registers with Programs &amp; Features
+          for easy uninstall.
+        </div>
+        <a href="https://github.com/bnp-aswin/speedify2/releases/latest/download/Speedify-Setup.exe"
+          class="btn btn-primary" style="margin-top:4px;">
+          ⬇ Download Speedify-Setup.exe
+        </a>
+      </div>
+
+      <div class="install-card">
+        <div class="install-tag" style="background:var(--sep);color:var(--text);">From Source</div>
+        <div class="install-title">Run with Python</div>
+        <div class="install-desc">
+          Requires Python 3.6+ and pip. Tkinter is included in Python's standard library.
+        </div>
+        <pre><code><span class="cm"># Clone</span>
+git clone https://github.com/bnp-aswin/speedify2
+cd speedify2
+
+<span class="cm"># Install dependency</span>
+pip install -r requirements.txt
+
+<span class="cm"># Run</span>
+python speedify.py</code></pre>
+      </div>
+    </div>
+
+    <div style="margin-top:28px;">
+      <div class="install-card" style="border-color:var(--sep);">
+        <div class="install-title" style="margin-bottom:10px;">Build your own .exe</div>
+        <div class="install-desc" style="margin-bottom:16px;">
+          A <code>build.bat</code> and PyInstaller specs are included. Running <code>build.bat</code>
+          produces both <code>dist/speedify.exe</code> (~7.4 MB) and
+          <code>dist/Speedify-Setup.exe</code> (~18 MB) installer.
+        </div>
+        <pre><code><span class="cm"># One-click build (installs PyInstaller if needed)</span>
+build.bat
+
+<span class="cm"># Or manually</span>
+pip install pyinstaller psutil
+pyinstaller speedify.spec --noconfirm --clean
+pyinstaller installer.spec --noconfirm --clean</code></pre>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- ── TECH ───────────────────────────────────────────────────────────── -->
+  <section id="tech">
+    <span class="section-tag">Technical Details</span>
+    <h2>Under the hood</h2>
+    <p class="section-sub">Minimal dependencies, standard-library GUI, and a smart overlay trick to get a true
+      borderless pill on Windows.</p>
+
+    <div class="tech-wrap"
+      style="background:var(--card);border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:36px;">
+      <table>
+        <thead>
+          <tr>
+            <th>Component</th>
+            <th>Technology</th>
+            <th>Notes</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>GUI framework</td>
+            <td>Tkinter</td>
+            <td>Python standard library — zero install overhead</td>
+          </tr>
+          <tr>
+            <td>Network stats</td>
+            <td>psutil</td>
+            <td>Cross-platform, reads from OS network counters</td>
+          </tr>
+          <tr>
+            <td>Threading</td>
+            <td>threading.Thread (daemon)</td>
+            <td>Background poll loop; exits cleanly with the app</td>
+          </tr>
+          <tr>
+            <td>Transparency</td>
+            <td>Windows chroma-key</td>
+            <td><code>wm_attributes("-transparentcolor")</code> makes a unique near-black color invisible</td>
+          </tr>
+          <tr>
+            <td>Speed averaging</td>
+            <td>collections.deque(maxlen=8)</td>
+            <td>8-sample sliding window smooths brief spikes</td>
+          </tr>
+          <tr>
+            <td>Config storage</td>
+            <td>JSON</td>
+            <td>Saved to <code>%APPDATA%\Speedify\config.json</code></td>
+          </tr>
+          <tr>
+            <td>Packaging</td>
+            <td>PyInstaller</td>
+            <td>Single-file exe; installer bundles app exe inside itself</td>
+          </tr>
+          <tr>
+            <td>Font</td>
+            <td>Segoe UI Bold 10pt</td>
+            <td>Windows-native; crisp at small sizes</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Color palette -->
+    <h3
+      style="font-size:1rem;margin-bottom:14px;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:.8px;">
+      Color Palette</h3>
+    <div class="swatch-row">
+      <div class="swatch">
+        <div class="swatch-dot" style="background:#1e1e1e;border:1px solid #333;"></div>
+        <div>
+          <div class="swatch-name">Background</div>
+          <div class="swatch-hex">#1e1e1e</div>
+        </div>
+      </div>
+      <div class="swatch">
+        <div class="swatch-dot" style="background:#00D4AA;"></div>
+        <div>
+          <div class="swatch-name" style="color:var(--teal)">Download</div>
+          <div class="swatch-hex">#00D4AA</div>
+        </div>
+      </div>
+      <div class="swatch">
+        <div class="swatch-dot" style="background:#FF6B6B;"></div>
+        <div>
+          <div class="swatch-name" style="color:var(--coral)">Upload</div>
+          <div class="swatch-hex">#FF6B6B</div>
+        </div>
+      </div>
+      <div class="swatch">
+        <div class="swatch-dot" style="background:#383838;border:1px solid #555;"></div>
+        <div>
+          <div class="swatch-name">Separator</div>
+          <div class="swatch-hex">#383838</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- ── FOOTER ─────────────────────────────────────────────────────────── -->
+  <footer>
+    <div style="margin-bottom:6px;">
+      Built with Python &amp; Tkinter &nbsp;·&nbsp; MIT License
+    </div>
+    <div class="footer-links">
+      <a href="https://github.com/bnp-aswin/speedify2" target="_blank" rel="noopener">GitHub Repository</a>
+      <a href="https://github.com/bnp-aswin/speedify2/releases" target="_blank" rel="noopener">Releases</a>
+      <a href="https://github.com/bnp-aswin/speedify2/issues" target="_blank" rel="noopener">Report an Issue</a>
+      <a href="https://github.com/bnp-aswin/speedify2/blob/main/CONTRIBUTING.md" target="_blank"
+        rel="noopener">Contributing</a>
+    </div>
+  </footer>
+
+  <!-- ── PILL ANIMATION ─────────────────────────────────────────────────── -->
+  <script>
+    const dlEl = document.getElementById("dl-val");
+    const ulEl = document.getElementById("ul-val");
+
+    const SEQUENCES = [
+      { dl: "↓ 0 KB/s", ul: "↑ 0 KB/s" },
+      { dl: "↓ 48 KB/s", ul: "↑ 12 KB/s" },
+      { dl: "↓ 2.3 Mbps", ul: "↑ 0.4 Mbps" },
+      { dl: "↓ 18.7 Mbps", ul: "↑ 1.2 Mbps" },
+      { dl: "↓ 56.1 Mbps", ul: "↑ 3.8 Mbps" },
+      { dl: "↓ 94.5 Mbps", ul: "↑ 12.0 Mbps" },
+      { dl: "↓ 56.1 Mbps", ul: "↑ 3.8 Mbps" },
+      { dl: "↓ 18.7 Mbps", ul: "↑ 1.2 Mbps" },
+      { dl: "↓ 2.3 Mbps", ul: "↑ 0.4 Mbps" },
+      { dl: "↓ 0 KB/s", ul: "↑ 0 KB/s" },
+    ];
+
+    let idx = 0;
+    setInterval(() => {
+      idx = (idx + 1) % SEQUENCES.length;
+      dlEl.textContent = SEQUENCES[idx].dl;
+      ulEl.textContent = SEQUENCES[idx].ul;
+    }, 900);
+  </script>
+
+</body>
+
+</html>

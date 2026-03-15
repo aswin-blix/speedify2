@@ -8,5 +8,6 @@
     "**/__pycache__": true,
     "**/*.pyc": true,
     "build/": true
-  }
+  },
+  "liveServer.settings.port": 5501
 }
