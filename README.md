@@ -17,6 +17,12 @@
 > A minimal, always-on-top network speed monitor that sits quietly on your desktop as a sleek, borderless pill-shaped overlay — showing real-time download and upload speeds at a glance.
 
 <p align="center">
+  <a href="https://bnp-aswin.github.io/speedify2/">🌐 Landing Page</a> &nbsp;·&nbsp;
+  <a href="https://github.com/bnp-aswin/speedify2/releases">Releases</a> &nbsp;·&nbsp;
+  <a href="https://github.com/bnp-aswin/speedify2/issues">Report Issue</a>
+</p>
+
+<p align="center">
   <a href="https://github.com/bnp-aswin/speedify2/releases/latest/download/Speedify-Setup.exe">
     <img src="https://img.shields.io/badge/⬇️ Download-Speedify--Setup.exe-2ea44f?style=for-the-badge&logo=windows&logoColor=white" alt="Download Speedify Setup" />
   </a>

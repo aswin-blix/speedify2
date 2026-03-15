@@ -573,8 +573,98 @@
       border-radius: 3px;
     }
 
+    /* ── HAMBURGER ───────────────────────────────────────────────────── */
+    .hamburger {
+      display: none;
+      flex-direction: column;
+      justify-content: center;
+      gap: 5px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 6px;
+      border-radius: 8px;
+      transition: background .15s;
+    }
+
+    .hamburger:hover {
+      background: rgba(255, 255, 255, .06);
+    }
+
+    .hamburger span {
+      display: block;
+      width: 22px;
+      height: 2px;
+      background: var(--text);
+      border-radius: 2px;
+      transition: transform .2s, opacity .2s, width .2s;
+    }
+
+    .hamburger.open span:nth-child(1) {
+      transform: translateY(7px) rotate(45deg);
+    }
+
+    .hamburger.open span:nth-child(2) {
+      opacity: 0;
+      width: 0;
+    }
+
+    .hamburger.open span:nth-child(3) {
+      transform: translateY(-7px) rotate(-45deg);
+    }
+
+    /* ── MOBILE NAV ──────────────────────────────────────────────────── */
+    .mobile-nav {
+      display: none;
+      position: fixed;
+      top: 57px;
+      left: 0;
+      right: 0;
+      z-index: 99;
+      background: rgba(13, 13, 13, .97);
+      backdrop-filter: blur(14px);
+      border-bottom: 1px solid var(--border);
+      flex-direction: column;
+      padding: 8px 20px 16px;
+    }
+
+    .mobile-nav.open {
+      display: flex;
+    }
+
+    .mobile-nav a {
+      color: var(--muted);
+      text-decoration: none;
+      font-size: .95rem;
+      padding: 13px 0;
+      border-bottom: 1px solid var(--border);
+      transition: color .2s;
+    }
+
+    .mobile-nav a:last-child {
+      border-bottom: none;
+    }
+
+    .mobile-nav a:hover,
+    .mobile-nav a:active {
+      color: var(--teal);
+    }
+
     /* ── RESPONSIVE ──────────────────────────────────────────────────── */
-    @media (max-width: 640px) {
+
+    /* Tablet */
+    @media (max-width: 1024px) {
+      nav {
+        padding: 14px 28px;
+      }
+
+      section {
+        padding: 72px 28px;
+      }
+    }
+
+    /* Large mobile / small tablet */
+    @media (max-width: 767px) {
       nav {
         padding: 12px 20px;
       }
@@ -583,8 +673,106 @@
         display: none;
       }
 
+      .hamburger {
+        display: flex;
+      }
+
       .hero {
-        padding: 72px 20px 60px;
+        padding: 72px 20px 56px;
+      }
+
+      .hero-sub {
+        font-size: 1rem;
+      }
+
+      .pill-demo-wrap {
+        margin-top: 52px;
+      }
+
+      section {
+        padding: 60px 20px;
+      }
+
+      .section-sub {
+        margin-bottom: 36px;
+      }
+
+      .install-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .install-card {
+        padding: 24px 20px;
+      }
+    }
+
+    /* Small mobile */
+    @media (max-width: 480px) {
+      h1 {
+        font-size: clamp(1.9rem, 10vw, 2.6rem);
+        letter-spacing: -.5px;
+      }
+
+      .hero {
+        padding: 60px 16px 48px;
+      }
+
+      .hero-sub {
+        font-size: .95rem;
+        margin-bottom: 32px;
+      }
+
+      .btn-group {
+        flex-direction: column;
+        align-items: stretch;
+        width: 100%;
+        max-width: 300px;
+      }
+
+      .btn {
+        justify-content: center;
+      }
+
+      .pill-demo-wrap {
+        margin-top: 40px;
+      }
+
+      .pill-screens {
+        flex-direction: column;
+        align-items: center;
+        gap: 16px;
+      }
+
+      section {
+        padding: 52px 16px;
+      }
+
+      .features-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .usage-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .install-card {
+        padding: 20px 16px;
+      }
+
+      pre {
+        font-size: .78rem;
+        padding: 13px 14px;
+      }
+
+      th,
+      td {
+        padding: 10px 12px;
+        font-size: .82rem;
+      }
+
+      .footer-links {
+        gap: 14px;
+        font-size: .82rem;
       }
     }
   </style>
@@ -605,7 +793,19 @@
       <li><a href="#tech">Tech</a></li>
       <li><a href="https://github.com/bnp-aswin/speedify2" target="_blank" rel="noopener">GitHub</a></li>
     </ul>
+    <button class="hamburger" id="hamburger" aria-label="Open menu">
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
   </nav>
+  <div class="mobile-nav" id="mobile-nav">
+    <a href="#features">Features</a>
+    <a href="#usage">Usage</a>
+    <a href="#install">Install</a>
+    <a href="#tech">Tech</a>
+    <a href="https://github.com/bnp-aswin/speedify2" target="_blank" rel="noopener">GitHub ↗</a>
+  </div>
 
   <!-- ── HERO ─────────────────────────────────────────────────────────── -->
   <div class="hero">
@@ -851,6 +1051,7 @@ pyinstaller installer.spec --noconfirm --clean</code></pre>
 
     <div class="tech-wrap"
       style="background:var(--card);border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:36px;">
+      <div style="overflow-x:auto;-webkit-overflow-scrolling:touch;">
       <table>
         <thead>
           <tr>
@@ -902,6 +1103,7 @@ pyinstaller installer.spec --noconfirm --clean</code></pre>
           </tr>
         </tbody>
       </table>
+      </div>
     </div>
 
     <!-- Color palette -->
@@ -980,6 +1182,22 @@ pyinstaller installer.spec --noconfirm --clean</code></pre>
       dlEl.textContent = SEQUENCES[idx].dl;
       ulEl.textContent = SEQUENCES[idx].ul;
     }, 900);
+
+    // Hamburger menu
+    const hamburger = document.getElementById('hamburger');
+    const mobileNav = document.getElementById('mobile-nav');
+
+    hamburger.addEventListener('click', () => {
+      hamburger.classList.toggle('open');
+      mobileNav.classList.toggle('open');
+    });
+
+    mobileNav.querySelectorAll('a').forEach(link => {
+      link.addEventListener('click', () => {
+        hamburger.classList.remove('open');
+        mobileNav.classList.remove('open');
+      });
+    });
   </script>
 
 </body>
